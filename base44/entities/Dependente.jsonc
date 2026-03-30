@@ -1,0 +1,40 @@
+{
+  "name": "Dependente",
+  "type": "object",
+  "properties": {
+    "titular_id": {
+      "type": "string",
+      "description": "ID do titular"
+    },
+    "nome": {
+      "type": "string",
+      "description": "Nome completo do dependente"
+    },
+    "cpf": {
+      "type": "string",
+      "description": "CPF do dependente"
+    },
+    "parentesco": {
+      "type": "string",
+      "enum": [
+        "conjuge",
+        "filho",
+        "filha",
+        "pai",
+        "mae",
+        "outro"
+      ],
+      "description": "Grau de parentesco"
+    },
+    "data_nascimento": {
+      "type": "string",
+      "format": "date",
+      "description": "Data de nascimento"
+    }
+  },
+  "required": [
+    "titular_id",
+    "nome",
+    "parentesco"
+  ]
+}
