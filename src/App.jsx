@@ -10,7 +10,8 @@ import Dashboard from '@/pages/Dashboard';
 import Titulares from '@/pages/Titulares';
 import TitularDetalhes from '@/pages/TitularDetalhes';
 import Mensalidades from '@/pages/Mensalidades';
-import Relatorios from '@/pages/Relatorios';
+import RelatorioPessoas from '@/pages/RelatorioPessoas';
+import RelatorioFinanceiro from '@/pages/RelatorioFinanceiro';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -43,7 +44,8 @@ const AuthenticatedApp = () => {
         <Route path="/titulares" element={<Titulares />} />
         <Route path="/titulares/:id" element={<TitularDetalhes />} />
         <Route path="/mensalidades" element={<Mensalidades />} />
-        <Route path="/relatorios" element={<Relatorios />} />
+        <Route path="/relatorio-pessoas" element={<RelatorioPessoas />} />
+        <Route path="/relatorio-financeiro" element={<RelatorioFinanceiro />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
