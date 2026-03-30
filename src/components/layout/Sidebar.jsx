@@ -1,11 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, CreditCard, X } from "lucide-react";
+import { LayoutDashboard, Users, CreditCard, BarChart2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "Painel", icon: LayoutDashboard, path: "/" },
   { label: "Titulares", icon: Users, path: "/titulares" },
   { label: "Mensalidades", icon: CreditCard, path: "/mensalidades" },
+  { label: "Relatórios", icon: BarChart2, path: "/relatorios" },
 ];
 
 export default function Sidebar({ open, onClose }) {
