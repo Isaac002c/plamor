@@ -106,7 +106,7 @@ export default function Titulares() {
             <Card key={titular.id} className="hover:shadow-md transition-shadow">
               <CardContent className="p-4">
                 <div className="grid grid-cols-4 gap-3 items-start">
-                  {/* Coluna 1: Nome + Telefone */}
+                  {/* Coluna 1: Nome + Telefone + CPF */}
                   <div>
                     <Link to={`/titulares/${titular.id}`} className="font-semibold text-foreground hover:text-primary truncate block">
                       {titular.nome}
@@ -116,30 +116,35 @@ export default function Titulares() {
                         <Phone className="w-3 h-3" /> {titular.telefone}
                       </div>
                     )}
+                    {titular.cpf && (
+                      <div className="text-xs text-muted-foreground">
+                        {titular.cpf}
+                      </div>
+                    )}
                   </div>
 
                   {/* Coluna 2: Status, Plano, Tipo de Plano */}
                   <div className="flex flex-col gap-1">
                     <StatusBadge status={titular.status} />
                     <PlanoLabel plano={titular.nome_plano} />
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium w-fit">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium text-center min-w-[100px]">
                       {titular.tipo_plano === "individual" ? "Individual" : "Familiar"}
                     </span>
                   </div>
 
                   {/* Coluna 3: Tipo Titular, Abonado/Pago, Valor */}
                   <div className="flex flex-col gap-1">
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-medium w-fit">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-medium text-center min-w-[100px]">
                       {titular.tipo_titular === "beneficiario" ? "Beneficiário" : "Pagador"}
                     </span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium w-fit ${
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium text-center min-w-[100px] ${
                       titular.nome_plano === "igreja" 
                         ? "bg-green-100 text-green-700" 
                         : "bg-yellow-100 text-yellow-700"
                     }`}>
                       {titular.nome_plano === "igreja" ? "Abonado" : "Pago"}
                     </span>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-medium w-fit">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-medium text-center min-w-[100px]">
                       R$ {titular.valor_mensalidade?.toFixed(2)}
                     </span>
                   </div>
