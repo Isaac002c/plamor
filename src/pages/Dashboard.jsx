@@ -144,14 +144,14 @@ export default function Dashboard() {
           <StatCard
             title="Inadimplentes"
             value={totalInadimplentes}
-            subtitle="Com mensalidade atrasada"
+            subtitle={`Titulares: ${totalInadimplentes}`}
             icon={UserX}
             colorClass="bg-red-100 text-red-700"
           />
           <StatCard
             title="Aniversariantes Hoje"
             value={aniversariantesDia}
-            subtitle={`Hoje: ${aniversariantesDia} · Mês: ${aniversariantesMes}`}
+            subtitle={`Hoje: ${aniversariantesDia} | Mês: ${aniversariantesMes}`}
             icon={Cake}
             colorClass="bg-orange-100 text-orange-700"
           />
