@@ -44,7 +44,7 @@ export default function Sidebar({ open, onClose }) {
         {/* Logo */}
         <div className="p-6 border-b border-sidebar-border flex items-center justify-between">
           <div>
-            <h1 className="font-serif text-sm font-bold text-sidebar-primary leading-tight whitespace-nowrap">PLAMOR CAEADMAS</h1>
+            <h1 className="font-serif text-base font-bold text-sidebar-primary leading-tight whitespace-nowrap">PLAMOR CAEADMAS</h1>
             <p className="text-[10px] text-sidebar-foreground/60 mt-0.5 whitespace-nowrap">Gestão de Mensalidades</p>
           </div>
           <button onClick={onClose} className="lg:hidden text-sidebar-foreground/60 hover:text-sidebar-foreground">
