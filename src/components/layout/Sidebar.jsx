@@ -15,10 +15,16 @@ const modules = [
         submenu: [
           { label: "Cadastro", path: "/titulares" },
           { label: "Ocorrências", path: "/ocorrencias" },
-          { label: "Relatório", path: "/relatorio-pessoas" },
         ]
       },
-      { label: "Relatórios", icon: FileText, path: "/relatorio-pessoas" },
+      { 
+        label: "Relatórios", 
+        icon: FileText, 
+        path: "/relatorios",
+        submenu: [
+          { label: "Relatório de Pessoas", path: "/relatorio-pessoas" },
+        ]
+      },
     ],
   },
   {
