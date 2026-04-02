@@ -130,7 +130,7 @@ export default function Dashboard() {
           <StatCard
             title="Total Inscritos"
             value={totalInscritos}
-            subtitle={`${titulares.length} titulares · ${dependentes.length} dependentes`}
+            subtitle={`Titulares: ${titulares.length} | Dep.: ${dependentes.length}`}
             icon={Users}
             colorClass="bg-blue-100 text-blue-700"
           />
