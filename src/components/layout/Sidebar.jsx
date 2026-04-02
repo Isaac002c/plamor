@@ -11,7 +11,6 @@ const modulos = {
     { label: "Rel. de Pessoas", icon: UserSquare2, path: "/relatorio-pessoas" },
   ],
   tesouraria: [
-    { label: "Painel", icon: LayoutDashboard, path: "/" },
     { label: "Rel. Financeiro", icon: BarChart2, path: "/relatorio-financeiro" },
   ],
 };
