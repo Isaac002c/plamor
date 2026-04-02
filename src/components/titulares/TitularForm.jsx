@@ -18,7 +18,7 @@ const initialForm = {
   tipo_plano: "individual", nome_plano: "plamor8", tipo_titular: "beneficiario",
   valor_mensalidade: "", dia_vencimento: "", data_adesao: "",
   forma_pagamento_preferida: "",
-  observacoes: "", status: "ativo",
+  observacoes: "",
 };
 
 const calcularIdade = (dataNascimento) => {
@@ -201,17 +201,6 @@ export default function TitularForm({ open, onClose, onSubmit, editData }) {
 
             <Field label="Data de Adesão">
               <Input type="date" value={form.data_adesao} onChange={e => set("data_adesao", e.target.value)} />
-            </Field>
-
-            <Field label="Status">
-              <Select value={form.status} onValueChange={v => set("status", v)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ativo">Ativo</SelectItem>
-                  <SelectItem value="inativo">Inativo</SelectItem>
-                  <SelectItem value="suspenso">Suspenso</SelectItem>
-                </SelectContent>
-              </Select>
             </Field>
 
             <Field label="Tipo de Plano" required>
