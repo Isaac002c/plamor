@@ -19,7 +19,6 @@ export default function TitularDetalhes() {
   const queryClient = useQueryClient();
 
   const [showDepForm, setShowDepForm] = useState(false);
-  const [showMensForm, setShowMensForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
 
   const { data: titulares = [] } = useQuery({
@@ -52,15 +51,6 @@ export default function TitularDetalhes() {
   const deleteDep = useMutation({
     mutationFn: (id) => base44.entities.Dependente.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["dependentes", titularId] }),
-  });
-
-  const createMens = useMutation({
-    mutationFn: (data) => base44.entities.Mensalidade.create(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["mensalidades", titularId] });
-      queryClient.invalidateQueries({ queryKey: ["mensalidades"] });
-      setShowMensForm(false);
-    },
   });
 
   const updateMens = useMutation({
@@ -176,12 +166,7 @@ export default function TitularDetalhes() {
       {/* Mensalidades */}
       <Card>
         <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-lg font-semibold">Mensalidades</CardTitle>
-            <Button size="sm" className="gap-2" onClick={() => setShowMensForm(true)}>
-              <Plus className="w-4 h-4" /> Gerar Mensalidade
-            </Button>
-          </div>
+          <CardTitle className="text-lg font-semibold">Histórico de Mensalidades</CardTitle>
         </CardHeader>
         <CardContent>
           {mensalidades.length === 0 ? (
@@ -237,7 +222,6 @@ export default function TitularDetalhes() {
       </Card>
 
       <DependenteForm open={showDepForm} onClose={() => setShowDepForm(false)} onSubmit={(data) => createDep.mutate(data)} titularId={titularId} />
-      <MensalidadeForm open={showMensForm} onClose={() => setShowMensForm(false)} onSubmit={(data) => createMens.mutate(data)} titular={titular} />
       {showEditForm && (
         <TitularForm open={showEditForm} onClose={() => setShowEditForm(false)} onSubmit={(data) => updateTitular.mutate(data)} editData={titular} />
       )}
