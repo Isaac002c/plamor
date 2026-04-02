@@ -105,27 +105,47 @@ export default function Titulares() {
           {filtered.map(titular => (
             <Card key={titular.id} className="hover:shadow-md transition-shadow">
               <CardContent className="p-4">
-                <div className="grid grid-cols-2 gap-4 items-start sm:grid-cols-3">
-                  <div className="col-span-1">
+                <div className="grid grid-cols-4 gap-3 items-start">
+                  {/* Coluna 1: Nome + Telefone */}
+                  <div>
                     <Link to={`/titulares/${titular.id}`} className="font-semibold text-foreground hover:text-primary truncate block">
                       {titular.nome}
                     </Link>
                     {titular.telefone && (
-                      <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
                         <Phone className="w-3 h-3" /> {titular.telefone}
                       </div>
                     )}
                   </div>
-                  <div className="col-span-1 flex flex-col gap-1">
+
+                  {/* Coluna 2: Status, Plano, Tipo de Plano */}
+                  <div className="flex flex-col gap-1">
                     <StatusBadge status={titular.status} />
                     <PlanoLabel plano={titular.nome_plano} />
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium w-fit">
+                      {titular.tipo_plano === "individual" ? "Individual" : "Familiar"}
+                    </span>
                   </div>
-                  <div className="col-span-1 sm:col-span-1 flex flex-col gap-1 items-end">
-                    {titular.nome_plano === "igreja" ? (
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium">Plano abonado</span>
-                    ) : (
-                      <span className="font-medium text-foreground text-sm">R$ {titular.valor_mensalidade?.toFixed(2)}/mês</span>
-                    )}
+
+                  {/* Coluna 3: Tipo Titular, Abonado/Pago, Valor */}
+                  <div className="flex flex-col gap-1">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-medium w-fit">
+                      {titular.tipo_titular === "beneficiario" ? "Beneficiário" : "Pagador"}
+                    </span>
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium w-fit ${
+                      titular.nome_plano === "igreja" 
+                        ? "bg-green-100 text-green-700" 
+                        : "bg-yellow-100 text-yellow-700"
+                    }`}>
+                      {titular.nome_plano === "igreja" ? "Abonado" : "Pago"}
+                    </span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-medium w-fit">
+                      R$ {titular.valor_mensalidade?.toFixed(2)}
+                    </span>
+                  </div>
+
+                  {/* Coluna 4: Botão Detalhes */}
+                  <div className="flex justify-end">
                     <Link to={`/titulares/${titular.id}`}>
                       <Button variant="outline" size="sm" className="gap-2">
                         <Eye className="w-4 h-4" /> Detalhes
