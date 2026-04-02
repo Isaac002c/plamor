@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import TitularForm from "@/components/titulares/TitularForm";
 import StatusBadge from "@/components/shared/StatusBadge";
+import PlanoLabel from "@/components/shared/PlanoLabel";
 import { gerarMensalidadesAutomaticas, abonarMensalidades } from "@/lib/gerarMensalidades";
 
 export default function Titulares() {
@@ -111,6 +112,16 @@ export default function Titulares() {
                          {titular.nome}
                        </Link>
                        <StatusBadge status={titular.status} />
+                       <PlanoLabel plano={titular.nome_plano} />
+                       {titular.tipo_plano === "familiar" && (
+                         <span className="text-xs px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-medium">Familiar</span>
+                       )}
+                       {titular.nome_plano === "igreja" && (
+                         <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 font-medium">✓ Abonado</span>
+                       )}
+                       {titular.tipo_titular === "pagador" && (
+                         <span className="text-xs px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-300 font-medium">Apenas Pagador</span>
+                       )}
                      </div>
                     <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
                       <span>{titular.cpf}</span>
