@@ -171,7 +171,7 @@ export default function Dashboard() {
           <StatCard
             title="Idosos (60+)"
             value={idosos}
-            subtitle={`de ${total} pessoas com idade registrada`}
+            subtitle="Total de idosos"
             icon={Smile}
             colorClass="bg-violet-100 text-violet-700"
           />
