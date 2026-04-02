@@ -45,8 +45,8 @@ export default function Sidebar({ open, onClose }) {
         {/* Logo */}
         <div className="p-6 border-b border-sidebar-border flex items-center justify-between">
           <div>
-            <h1 className="font-serif text-xl font-bold text-sidebar-primary">PLAMOR - CAEADMAS </h1>
-            <p className="text-xs text-sidebar-foreground/60 mt-0.5">Gestão de Planos</p>
+            <h1 className="font-serif text-xl font-bold text-sidebar-primary">PLAMOR CAEADMAS </h1>
+            <p className="text-xs text-sidebar-foreground/60 mt-0.5">Gestão de </p>
           </div>
           <button onClick={onClose} className="lg:hidden text-sidebar-foreground/60 hover:text-sidebar-foreground">
             <X className="w-5 h-5" />
