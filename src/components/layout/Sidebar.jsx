@@ -10,7 +10,7 @@ const modules = [
 
 },
 {
-  label: "Pessoas",
+  label: "Secretaria",
   items: [
   { label: "Titulares", icon: Users, path: "/titulares" },
   { label: "Mensalidades", icon: CreditCard, path: "/mensalidades" },
@@ -18,7 +18,7 @@ const modules = [
 
 },
 {
-  label: "Financeiro",
+  label: "Tesouraria",
   items: [
   { label: "Rel. Financeiro", icon: BarChart2, path: "/relatorio-financeiro" }]
 
