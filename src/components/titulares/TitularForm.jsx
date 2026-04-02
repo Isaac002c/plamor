@@ -245,8 +245,9 @@ export default function TitularForm({ open, onClose, onSubmit, editData }) {
             </Field>
 
             <Field label="Valor Mensalidade (R$)" required>
-              <Input type="number" step="0.01" value={form.valor_mensalidade} onChange={e => set("valor_mensalidade", e.target.value)} required disabled={form.nome_plano === "plamor8"} />
+              <Input type="number" step="0.01" value={form.valor_mensalidade} onChange={e => set("valor_mensalidade", e.target.value)} required disabled={form.nome_plano === "plamor8" || form.nome_plano === "igreja"} />
               {form.nome_plano === "plamor8" && <p className="text-xs text-muted-foreground mt-1">Calculado automaticamente por idade</p>}
+              {form.nome_plano === "igreja" && <p className="text-xs text-green-400 mt-1 font-medium">✓ Plano abonado (sem mensalidade)</p>}
             </Field>
 
             <Field label="Dia do Vencimento" required>
