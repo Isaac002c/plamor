@@ -7,8 +7,8 @@ import { differenceInYears, parseISO } from "date-fns";
 function StatCard({ title, value, subtitle, icon: Icon, colorClass = "bg-primary/10 text-primary" }) {
   return (
     <Card>
-      <CardContent className="p-5 flex items-start gap-4">
-        <div className={`p-2.5 rounded-lg ${colorClass}`}>
+      <CardContent className="p-5 flex items-start gap-4 h-24">
+        <div className={`p-2.5 rounded-lg flex-shrink-0 ${colorClass}`}>
           <Icon className="w-5 h-5" />
         </div>
         <div>
