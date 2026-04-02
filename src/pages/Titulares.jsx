@@ -120,7 +120,11 @@ export default function Titulares() {
                           <Phone className="w-3 h-3" /> {titular.telefone}
                         </span>
                       )}
-                      <span className="font-medium text-foreground">R$ {titular.valor_mensalidade?.toFixed(2)}/mês</span>
+                      {titular.nome_plano === "igreja" ? (
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium">Plano abonado</span>
+                      ) : (
+                        <span className="font-medium text-foreground">R$ {titular.valor_mensalidade?.toFixed(2)}/mês</span>
+                      )}
                     </div>
                   </div>
                   <Link to={`/titulares/${titular.id}`}>
