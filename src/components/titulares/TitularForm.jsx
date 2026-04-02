@@ -197,10 +197,13 @@ export default function TitularForm({ open, onClose, onSubmit, editData }) {
               </Select>
             </Field>
 
-            <Field label="Plano">
-              <div className="px-3 py-2 rounded-md border border-input bg-muted text-sm text-foreground">
-                Plamor 8
-              </div>
+            <Field label="Plano" required>
+              <Select value={form.nome_plano} onValueChange={v => set("nome_plano", v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="plamor8">Plamor 8</SelectItem>
+                </SelectContent>
+              </Select>
             </Field>
 
             <Field label="Valor Mensalidade (R$)" required>
