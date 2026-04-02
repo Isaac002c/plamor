@@ -1,13 +1,42 @@
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { Users, CreditCard, AlertTriangle, CheckCircle } from "lucide-react";
+import { Users, CreditCard, AlertTriangle, CheckCircle, UserCheck, Baby } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import StatCard from "@/components/dashboard/StatCard";
 import StatusBadge from "@/components/shared/StatusBadge";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { differenceInYears, parseISO } from "date-fns";
+
+function StatCard({ title, value, subtitle, icon: Icon, colorClass = "bg-primary/10 text-primary" }) {
+  return (
+    <Card>
+      <CardContent className="p-5 flex items-start gap-4">
+        <div className={`p-2.5 rounded-lg ${colorClass}`}>
+          <Icon className="w-5 h-5" />
+        </div>
+        <div>
+          <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">{title}</p>
+          <p className="text-2xl font-bold mt-0.5">{value}</p>
+          {subtitle && <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function FaixaEtariaRow({ label, count, total }) {
+  const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+  return (
+    <div className="flex items-center gap-3">
+      <span className="text-sm w-28 text-muted-foreground">{label}</span>
+      <div className="flex-1 bg-muted rounded-full h-2">
+        <div className="bg-primary h-2 rounded-full" style={{ width: `${pct}%` }} />
+      </div>
+      <span className="text-sm font-semibold w-8 text-right">{count}</span>
+      <span className="text-xs text-muted-foreground w-8 text-right">{pct}%</span>
+    </div>
+  );
+}
 
 export default function Dashboard() {
   const { data: titulares = [], isLoading: loadingTitulares } = useQuery({
@@ -15,22 +44,51 @@ export default function Dashboard() {
     queryFn: () => base44.entities.Titular.list("-created_date"),
   });
 
+  const { data: dependentes = [], isLoading: loadingDependentes } = useQuery({
+    queryKey: ["dependentes"],
+    queryFn: () => base44.entities.Dependente.list(),
+  });
+
   const { data: mensalidades = [], isLoading: loadingMensalidades } = useQuery({
     queryKey: ["mensalidades"],
     queryFn: () => base44.entities.Mensalidade.list("-data_vencimento", 100),
   });
 
-  const isLoading = loadingTitulares || loadingMensalidades;
+  const isLoading = loadingTitulares || loadingDependentes || loadingMensalidades;
 
-  const totalTitulares = titulares.filter(t => t.status === "ativo").length;
-  const totalPagos = mensalidades.filter(m => m.status === "pago").length;
-  const totalPendentes = mensalidades.filter(m => m.status === "pendente").length;
-  const totalAtrasados = mensalidades.filter(m => m.status === "atrasado").length;
+  // — Estatísticas de pessoas —
+  const totalInscritos = titulares.length + dependentes.length;
+  const titularesAtivos = titulares.filter(t => t.status === "ativo");
+  const totalAtivos = titularesAtivos.length;
 
-  const receitaMes = mensalidades
-    .filter(m => m.status === "pago")
-    .reduce((sum, m) => sum + (m.valor || 0), 0);
+  const masculino = titulares.filter(t => t.sexo === "masculino").length;
+  const feminino = titulares.filter(t => t.sexo === "feminino").length;
+  const outro = titulares.filter(t => t.sexo === "outro" || !t.sexo).length;
 
+  // Faixa etária (titulares + dependentes com data_nascimento)
+  const todasPessoas = [
+    ...titulares.map(t => t.data_nascimento),
+    ...dependentes.map(d => d.data_nascimento),
+  ].filter(Boolean);
+
+  const getIdade = (dn) => {
+    try { return differenceInYears(new Date(), parseISO(dn)); } catch { return null; }
+  };
+
+  const idades = todasPessoas.map(getIdade).filter(i => i !== null);
+  const total = idades.length;
+
+  const faixas = [
+    { label: "0 – 12 anos", count: idades.filter(i => i <= 12).length },
+    { label: "13 – 17 anos", count: idades.filter(i => i >= 13 && i <= 17).length },
+    { label: "18 – 35 anos", count: idades.filter(i => i >= 18 && i <= 35).length },
+    { label: "36 – 59 anos", count: idades.filter(i => i >= 36 && i <= 59).length },
+    { label: "60+ anos", count: idades.filter(i => i >= 60).length },
+  ];
+
+  const criancas = idades.filter(i => i <= 12).length;
+
+  // — Pendências financeiras —
   const pendencias = mensalidades
     .filter(m => m.status === "atrasado" || m.status === "pendente")
     .sort((a, b) => new Date(a.data_vencimento) - new Date(b.data_vencimento))
@@ -47,17 +105,56 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl md:text-3xl font-serif font-bold text-foreground">Painel de Controle</h1>
-        <p className="text-muted-foreground text-sm mt-1">Visão geral do sistema de cobranças</p>
+        <h1 className="text-2xl md:text-3xl font-serif font-bold text-foreground">Dashboard</h1>
+        <p className="text-muted-foreground text-sm mt-1">Visão geral dos beneficiários do plano</p>
       </div>
 
+      {/* Cards superiores */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Titulares Ativos" value={totalTitulares} icon={Users} />
-        <StatCard title="Receita Recebida" value={`R$ ${receitaMes.toFixed(2)}`} icon={CheckCircle} variant="success" />
-        <StatCard title="Pendentes" value={totalPendentes} icon={CreditCard} variant="warning" />
-        <StatCard title="Atrasados" value={totalAtrasados} icon={AlertTriangle} variant="danger" />
+        <StatCard
+          title="Total Inscritos"
+          value={totalInscritos}
+          subtitle={`${titulares.length} titular(es) + ${dependentes.length} dependente(s)`}
+          icon={Users}
+          colorClass="bg-blue-100 text-blue-700"
+        />
+        <StatCard
+          title="Beneficiários Ativos"
+          value={totalAtivos}
+          subtitle="Titulares com plano ativo"
+          icon={UserCheck}
+          colorClass="bg-emerald-100 text-emerald-700"
+        />
+        <StatCard
+          title="Homens × Mulheres"
+          value={`${masculino} × ${feminino}`}
+          subtitle={outro > 0 ? `+${outro} outro(s)` : "Titulares cadastrados"}
+          icon={Users}
+          colorClass="bg-violet-100 text-violet-700"
+        />
+        <StatCard
+          title="Crianças (0–12)"
+          value={criancas}
+          subtitle={`de ${total} pessoas com idade registrada`}
+          icon={Baby}
+          colorClass="bg-amber-100 text-amber-700"
+        />
       </div>
 
+      {/* Faixa etária */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base font-semibold">Faixa Etária</CardTitle>
+          <p className="text-xs text-muted-foreground">Titulares e dependentes com data de nascimento registrada ({total} pessoas)</p>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {faixas.map(f => (
+            <FaixaEtariaRow key={f.label} label={f.label} count={f.count} total={total} />
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* Pendências */}
       <Card>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
