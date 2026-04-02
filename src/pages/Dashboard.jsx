@@ -157,14 +157,14 @@ export default function Dashboard() {
           <StatCard
             title="Homens"
             value={masculino}
-            subtitle="Titulares masculinos"
+            subtitle="Total masculino"
             icon={PersonStanding}
             colorClass="bg-sky-100 text-sky-700"
           />
           <StatCard
             title="Mulheres"
             value={feminino}
-            subtitle="Titulares femininas"
+            subtitle="Total feminino"
             icon={Users}
             colorClass="bg-pink-100 text-pink-700"
           />
