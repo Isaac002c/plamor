@@ -51,7 +51,7 @@ export default function Sidebar({ open, onClose }) {
       >
         {/* Logo */}
         <div className="p-3 border-b border-sidebar-border flex items-center justify-between">
-          <div className="bg-white rounded-lg p-1.5 flex-1">
+          <div className="bg-white rounded-lg p-1.5 flex-1 flex items-center justify-center">
             <img 
               src="https://media.base44.com/images/public/69ca9edf5c4f7d6c636a3ae7/ad698b204_logo_grupo-jardim-da-saudade_RcVWV1.png" 
               alt="Jardim da Saudade" 
