@@ -2,7 +2,8 @@ import { base44 } from "@/api/base44Client";
 import { addMonths, format } from "date-fns";
 
 export async function gerarMensalidadesAutomaticas(titular, dependentes = []) {
-  if (titular.nome_plano !== "plamor8") return;
+  if (!titular.data_adesao) return; // Validar data de adesão
+  if (titular.nome_plano !== "plamor8" && titular.nome_plano !== "igreja") return;
 
   const dataAdesao = new Date(titular.data_adesao);
   const mensalidades = [];
