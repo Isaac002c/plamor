@@ -97,11 +97,10 @@
     "nome_plano": {
       "type": "string",
       "enum": [
-        "basico",
-        "essencial",
-        "premium"
+        "plamor8",
+        "igreja"
       ],
-      "default": "basico",
+      "default": "plamor8",
       "description": "Nome do plano contratado"
     },
     "valor_mensalidade": {

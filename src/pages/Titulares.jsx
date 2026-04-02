@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import TitularForm from "@/components/titulares/TitularForm";
 import StatusBadge from "@/components/shared/StatusBadge";
 import PlanoLabel from "@/components/shared/PlanoLabel";
+import { gerarMensalidadesAutomaticas, abonarMensalidades } from "@/lib/gerarMensalidades";
 
 export default function Titulares() {
   const [showForm, setShowForm] = useState(false);
@@ -23,9 +24,23 @@ export default function Titulares() {
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Titular.create(data),
+    mutationFn: async (data) => {
+      const titular = await base44.entities.Titular.create(data);
+      
+      // Gerar mensalidades automaticamente
+      if (data.nome_plano === "plamor8") {
+        await gerarMensalidadesAutomaticas(titular);
+      } else if (data.nome_plano === "igreja") {
+        // Para Igreja, gerar abonadas
+        await gerarMensalidadesAutomaticas({ ...titular, nome_plano: "plamor8" });
+        await abonarMensalidades(titular.id);
+      }
+      
+      return titular;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["titulares"] });
+      queryClient.invalidateQueries({ queryKey: ["mensalidades"] });
       setShowForm(false);
     },
   });

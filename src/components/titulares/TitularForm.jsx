@@ -21,6 +21,23 @@ const initialForm = {
   observacoes: "", status: "ativo",
 };
 
+const calcularIdade = (dataNascimento) => {
+  if (!dataNascimento) return null;
+  const hoje = new Date();
+  const nascimento = new Date(dataNascimento);
+  let idade = hoje.getFullYear() - nascimento.getFullYear();
+  if (hoje.getMonth() < nascimento.getMonth() || (hoje.getMonth() === nascimento.getMonth() && hoje.getDate() < nascimento.getDate())) {
+    idade--;
+  }
+  return idade;
+};
+
+const calcularValorPorIdade = (dataNascimento) => {
+  const idade = calcularIdade(dataNascimento);
+  if (idade === null) return 0;
+  return idade >= 65 ? 38 : 26;
+};
+
 const SectionTitle = ({ children }) => (
   <div className="sm:col-span-2">
     <h3 className="text-xs font-semibold uppercase tracking-widest text-primary/70 mb-1">{children}</h3>
@@ -39,8 +56,18 @@ const UFS = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","P
 
 export default function TitularForm({ open, onClose, onSubmit, editData }) {
   const [form, setForm] = useState(editData || initialForm);
+  const [dependentes, setDependentes] = useState([]);
 
-  const set = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
+  const set = (field, value) => {
+    const newForm = { ...form, [field]: value };
+    
+    // Auto-calcular valor se data_nascimento for alterada
+    if (field === "data_nascimento") {
+      newForm.valor_mensalidade = calcularValorPorIdade(value);
+    }
+    
+    setForm(newForm);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -202,12 +229,14 @@ export default function TitularForm({ open, onClose, onSubmit, editData }) {
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="plamor8">Plamor 8</SelectItem>
+                  <SelectItem value="igreja">Igreja</SelectItem>
                 </SelectContent>
               </Select>
             </Field>
 
             <Field label="Valor Mensalidade (R$)" required>
-              <Input type="number" step="0.01" value={form.valor_mensalidade} onChange={e => set("valor_mensalidade", e.target.value)} required />
+              <Input type="number" step="0.01" value={form.valor_mensalidade} onChange={e => set("valor_mensalidade", e.target.value)} required disabled={form.nome_plano === "plamor8"} />
+              {form.nome_plano === "plamor8" && <p className="text-xs text-muted-foreground mt-1">Calculado automaticamente por idade</p>}
             </Field>
 
             <Field label="Dia do Vencimento" required>
