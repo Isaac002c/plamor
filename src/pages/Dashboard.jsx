@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
-import { Users, UserCheck, UserX, Baby, PersonStanding, Smile } from "lucide-react";
+import { Users, UserCheck, UserX, Baby, PersonStanding, Smile, Cake } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { differenceInYears, parseISO } from "date-fns";
 
@@ -76,6 +76,16 @@ export default function Dashboard() {
   const criancas = idades.filter(i => i <= 12).length;
   const idosos = idades.filter(i => i >= 60).length;
 
+  // Aniversariantes do dia
+  const hoje = new Date();
+  const aniversariantes = [...titulares, ...dependentes].filter(p => {
+    if (!p.data_nascimento) return false;
+    try {
+      const dn = parseISO(p.data_nascimento);
+      return dn.getDate() === hoje.getDate() && dn.getMonth() === hoje.getMonth();
+    } catch { return false; }
+  }).length;
+
   // Inadimplentes: titulares com pelo menos uma mensalidade atrasada
   const inadimplentesIds = new Set(
     mensalidades.filter(m => m.status === "atrasado").map(m => m.titular_id)
@@ -108,7 +118,7 @@ export default function Dashboard() {
       {/* Cards — Inscrições */}
       <div>
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">Inscrições</p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
             title="Total Inscritos"
             value={totalInscritos}
@@ -129,6 +139,13 @@ export default function Dashboard() {
             subtitle="Titulares com mensalidade atrasada"
             icon={UserX}
             colorClass="bg-red-100 text-red-700"
+          />
+          <StatCard
+            title="Aniversariantes Hoje"
+            value={aniversariantes}
+            subtitle="Titulares e dependentes"
+            icon={Cake}
+            colorClass="bg-orange-100 text-orange-700"
           />
         </div>
       </div>
