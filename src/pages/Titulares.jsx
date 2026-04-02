@@ -125,7 +125,7 @@ export default function Titulares() {
 
                   {/* Coluna 2: Status, Plano, Tipo de Plano */}
                   <div className="flex flex-col gap-1">
-                    <div className="text-center"><StatusBadge status={titular.status} /></div>
+                    <div className="text-center min-w-[100px]"><StatusBadge status={titular.status} /></div>
                     <PlanoLabel plano={titular.nome_plano} />
                     <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium text-center min-w-[100px]">
                       {titular.tipo_plano === "individual" ? "Individual" : "Familiar"}
