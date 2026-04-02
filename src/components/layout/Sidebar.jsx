@@ -5,10 +5,9 @@ import { cn } from "@/lib/utils";
 
 const modulos = {
   secretaria: [
-    { label: "Painel", icon: LayoutDashboard, path: "/" },
-    { label: "Titulares", icon: Users, path: "/titulares" },
-    { label: "Mensalidades", icon: CreditCard, path: "/mensalidades" },
-    { label: "Rel. de Pessoas", icon: UserSquare2, path: "/relatorio-pessoas" },
+    { label: "Dashboard", icon: LayoutDashboard, path: "/" },
+    { label: "Pessoas", icon: Users, path: "/titulares" },
+    { label: "Relatórios", icon: UserSquare2, path: "/relatorio-pessoas" },
   ],
   tesouraria: [
     { label: "Rel. Financeiro", icon: BarChart2, path: "/relatorio-financeiro" },
