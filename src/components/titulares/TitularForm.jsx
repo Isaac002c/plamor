@@ -40,7 +40,7 @@ const calcularValorPorIdade = (dataNascimento) => {
 
 const SectionTitle = ({ children }) => (
   <div className="sm:col-span-2">
-    <h3 className="text-xs font-semibold uppercase tracking-widest text-foreground/80 mb-1">{children}</h3>
+    <h3 className="text-xs font-semibold uppercase tracking-widest text-accent mb-1">{children}</h3>
     <Separator />
   </div>
 );
