@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, CreditCard, BarChart2, FileText, X } from "lucide-react";
+import { LayoutDashboard, Users, CreditCard, BarChart2, FileText, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const modules = [
@@ -8,7 +8,16 @@ const modules = [
     label: "Secretária",
     items: [
       { label: "Dashboard", icon: LayoutDashboard, path: "/" },
-      { label: "Pessoas", icon: Users, path: "/titulares" },
+      { 
+        label: "Pessoas", 
+        icon: Users, 
+        path: "/pessoas",
+        submenu: [
+          { label: "Cadastro", path: "/titulares" },
+          { label: "Ocorrências", path: "/ocorrencias" },
+          { label: "Relatório", path: "/relatorio-pessoas" },
+        ]
+      },
       { label: "Relatórios", icon: FileText, path: "/relatorio-pessoas" },
     ],
   },
@@ -25,12 +34,22 @@ export default function Sidebar({ open, onClose }) {
   const location = useLocation();
   const [activeModule, setActiveModule] = useState(() => {
     const path = window.location.pathname;
-    return modules[1].items.some(i => i.path === path) ? 1 : 0;
+    return modules[1].items.some(i => i.path === path || i.submenu?.some(s => s.path === path)) ? 1 : 0;
   });
+  const [expandedSubmenus, setExpandedSubmenus] = useState(new Set());
 
   useEffect(() => {
-    const idx = modules[1].items.some(i => i.path === location.pathname) ? 1 : 0;
+    const idx = modules[1].items.some(i => i.path === location.pathname || i.submenu?.some(s => s.path === location.pathname)) ? 1 : 0;
     setActiveModule(idx);
+    
+    // Auto-expand submenu if a submenu item is active
+    modules.forEach((mod, modIdx) => {
+      mod.items.forEach((item, itemIdx) => {
+        if (item.submenu?.some(s => s.path === location.pathname)) {
+          setExpandedSubmenus(new Set([`${modIdx}-${itemIdx}`]));
+        }
+      });
+    });
   }, [location.pathname]);
 
   const isActive = (path) =>
@@ -83,22 +102,74 @@ export default function Sidebar({ open, onClose }) {
 
         {/* Nav */}
         <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
-          {currentItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              onClick={onClose}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
-                isActive(item.path)
-                  ? "bg-sidebar-accent text-sidebar-primary"
-                  : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-              )}
-            >
-              <item.icon className="w-4 h-4 flex-shrink-0" />
-              {item.label}
-            </Link>
-          ))}
+          {currentItems.map((item, idx) => {
+            const isExpanded = expandedSubmenus.has(`${activeModule}-${idx}`);
+            const hasSubmenu = item.submenu && item.submenu.length > 0;
+            
+            return (
+              <div key={item.path}>
+                {hasSubmenu ? (
+                  <button
+                    onClick={() => {
+                      const key = `${activeModule}-${idx}`;
+                      const newSet = new Set(expandedSubmenus);
+                      if (newSet.has(key)) {
+                        newSet.delete(key);
+                      } else {
+                        newSet.add(key);
+                      }
+                      setExpandedSubmenus(newSet);
+                    }}
+                    className={cn(
+                      "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
+                      isActive(item.path)
+                        ? "bg-sidebar-accent text-sidebar-primary"
+                        : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                    )}
+                  >
+                    <item.icon className="w-4 h-4 flex-shrink-0" />
+                    {item.label}
+                    <ChevronDown className={cn("w-4 h-4 ml-auto transition-transform", isExpanded && "rotate-180")} />
+                  </button>
+                ) : (
+                  <Link
+                    to={item.path}
+                    onClick={onClose}
+                    className={cn(
+                      "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
+                      isActive(item.path)
+                        ? "bg-sidebar-accent text-sidebar-primary"
+                        : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                    )}
+                  >
+                    <item.icon className="w-4 h-4 flex-shrink-0" />
+                    {item.label}
+                  </Link>
+                )}
+                
+                {hasSubmenu && isExpanded && (
+                  <div className="mt-1 ml-4 space-y-1">
+                    {item.submenu.map((subitem) => (
+                      <Link
+                        key={subitem.path}
+                        to={subitem.path}
+                        onClick={onClose}
+                        className={cn(
+                          "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all",
+                          isActive(subitem.path)
+                            ? "bg-sidebar-accent/50 text-sidebar-primary font-medium"
+                            : "text-sidebar-foreground/60 hover:bg-sidebar-accent/30 hover:text-sidebar-foreground"
+                        )}
+                      >
+                        <span className="w-1 h-1 rounded-full bg-current" />
+                        {subitem.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </nav>
 
         <div className="p-4 border-t border-sidebar-border">
