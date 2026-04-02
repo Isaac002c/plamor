@@ -178,7 +178,7 @@ export default function Dashboard() {
           <StatCard
             title="Crianças (0–12)"
             value={criancas}
-            subtitle={`de ${total} pessoas com idade registrada`}
+            subtitle="Total de crianças"
             icon={Baby}
             colorClass="bg-amber-100 text-amber-700"
           />
