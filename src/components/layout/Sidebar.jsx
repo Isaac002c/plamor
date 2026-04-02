@@ -48,14 +48,14 @@ export default function Sidebar({ open, onClose }) {
         {/* Abas de módulo */}
         <div className="flex border-b border-sidebar-border">
           {[
-            { key: "secretaria", label: "Secretária" },
+            { key: "secretaria", label: "Secretaria" },
             { key: "tesouraria", label: "Tesouraria" },
           ].map((mod) => (
             <button
               key={mod.key}
               onClick={() => setAba(mod.key)}
               className={cn(
-                "flex-1 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all",
+                "flex-1 py-2.5 text-xs font-semibold uppercase tracking-wide transition-all",
                 aba === mod.key
                   ? "text-sidebar-primary border-b-2 border-sidebar-primary bg-sidebar-accent/30"
                   : "text-sidebar-foreground/50 hover:text-sidebar-foreground/80"
