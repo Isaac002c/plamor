@@ -125,13 +125,13 @@ export default function Titulares() {
 
                   {/* Coluna 2: Status, Plano, Tipo de Plano */}
                   <div className="flex flex-col gap-1">
-                    <div className="h-8 w-28 flex items-center justify-center">
+                    <div className="flex items-center justify-center h-10 w-32">
                       <StatusBadge status={titular.status} />
                     </div>
-                    <div className="h-8 w-28 flex items-center justify-center">
+                    <div className="flex items-center justify-center h-10 w-32">
                       <PlanoLabel plano={titular.nome_plano} />
                     </div>
-                    <div className="h-8 w-28 flex items-center justify-center">
+                    <div className="flex items-center justify-center h-10 w-32">
                       <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium">
                         {titular.tipo_plano === "individual" ? "Individual" : "Familiar"}
                       </span>
@@ -140,12 +140,12 @@ export default function Titulares() {
 
                   {/* Coluna 3: Tipo Titular, Abonado/Pago, Valor */}
                   <div className="flex flex-col gap-1">
-                    <div className="h-8 w-28 flex items-center justify-center">
+                    <div className="flex items-center justify-center h-10 w-32">
                       <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-medium">
                         {titular.tipo_titular === "beneficiario" ? "Beneficiário" : "Pagador"}
                       </span>
                     </div>
-                    <div className="h-8 w-28 flex items-center justify-center">
+                    <div className="flex items-center justify-center h-10 w-32">
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                         titular.nome_plano === "igreja" 
                           ? "bg-green-100 text-green-700" 
@@ -154,7 +154,7 @@ export default function Titulares() {
                         {titular.nome_plano === "igreja" ? "Abonado" : "Pago"}
                       </span>
                     </div>
-                    <div className="h-8 w-28 flex items-center justify-center">
+                    <div className="flex items-center justify-center h-10 w-32">
                       <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-medium">
                         R$ {titular.valor_mensalidade?.toFixed(2)}
                       </span>
