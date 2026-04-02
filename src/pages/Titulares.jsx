@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
-import { Plus, Search, Phone, Eye } from "lucide-react";
+import { Plus, Search, Phone, Eye, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -117,8 +117,8 @@ export default function Titulares() {
                       </div>
                     )}
                     {titular.cpf && (
-                      <div className="text-xs text-muted-foreground">
-                        {titular.cpf}
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <FileText className="w-3 h-3" /> {titular.cpf}
                       </div>
                     )}
                   </div>
