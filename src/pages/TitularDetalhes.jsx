@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Plus, UserPlus, CreditCard, Pencil, Trash2, Phone, Mail, MapPin, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import StatusBadge from "@/components/shared/StatusBadge";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
 import DependenteForm from "@/components/titulares/DependenteForm";
 import MensalidadeForm from "@/components/titulares/MensalidadeForm";
