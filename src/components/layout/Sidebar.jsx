@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 const modules = [
   {
-    label: "Secretaria",
+    label: "Secretária",
     items: [
       { label: "Dashboard", icon: LayoutDashboard, path: "/" },
       { label: "Pessoas", icon: Users, path: "/titulares" },
@@ -13,7 +13,7 @@ const modules = [
     ],
   },
   {
-    label: "Tesouraria",
+    label: "Tesourária",
     items: [
       { label: "Mensalidades", icon: CreditCard, path: "/mensalidades" },
       { label: "Rel. Financeiro", icon: BarChart2, path: "/relatorio-financeiro" },
