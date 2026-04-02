@@ -127,24 +127,24 @@ export default function Titulares() {
                   <div className="flex flex-col gap-1">
                     <StatusBadge status={titular.status} />
                     <PlanoLabel plano={titular.nome_plano} />
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium w-fit">
+                    <span className="text-xs px-2 py-0.5 rounded border bg-blue-100 text-blue-700 font-medium w-fit">
                       {titular.tipo_plano === "individual" ? "Individual" : "Familiar"}
                     </span>
                   </div>
 
                   {/* Coluna 3: Tipo Titular, Abonado/Pago, Valor */}
                   <div className="flex flex-col gap-1">
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-medium w-fit">
+                    <span className="text-xs px-2 py-0.5 rounded border bg-purple-100 text-purple-700 font-medium w-fit">
                       {titular.tipo_titular === "beneficiario" ? "Beneficiário" : "Pagador"}
                     </span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium w-fit ${
+                    <span className={`text-xs px-2 py-0.5 rounded font-medium w-fit border ${
                       titular.nome_plano === "igreja" 
-                        ? "bg-green-100 text-green-700" 
-                        : "bg-yellow-100 text-yellow-700"
+                        ? "bg-green-100 text-green-700 border-green-200" 
+                        : "bg-yellow-100 text-yellow-700 border-yellow-200"
                     }`}>
                       {titular.nome_plano === "igreja" ? "Abonado" : "Pago"}
                     </span>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-medium w-fit">
+                    <span className="text-xs px-2 py-0.5 rounded border bg-gray-100 text-gray-700 font-medium w-fit border-gray-200">
                       R$ {titular.valor_mensalidade?.toFixed(2)}
                     </span>
                   </div>
