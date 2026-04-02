@@ -100,13 +100,19 @@ export default function TitularDetalhes() {
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
             <div>
               <div className="flex items-center gap-3 flex-wrap">
-                <h1 className="text-2xl font-serif font-bold">{titular.nome}</h1>
-                <StatusBadge status={titular.status} />
-                <PlanoLabel plano={titular.nome_plano} />
-                {titular.tipo_plano === "familiar" && (
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">Familiar</span>
-                )}
-              </div>
+                 <h1 className="text-2xl font-serif font-bold">{titular.nome}</h1>
+                 <StatusBadge status={titular.status} />
+                 <PlanoLabel plano={titular.nome_plano} />
+                 {titular.tipo_plano === "familiar" && (
+                   <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">Familiar</span>
+                 )}
+                 {titular.nome_plano === "igreja" && (
+                   <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium">Abonado</span>
+                 )}
+                 {titular.tipo_titular === "pagador" && (
+                   <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium">Pagador</span>
+                 )}
+               </div>
               <div className="flex flex-wrap gap-4 mt-3 text-sm text-muted-foreground">
                 <span>CPF: {titular.cpf}</span>
                 {titular.telefone && <span className="flex items-center gap-1"><Phone className="w-3 h-3" /> {titular.telefone}</span>}
