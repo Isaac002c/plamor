@@ -15,7 +15,7 @@ const initialForm = {
   // Endereço
   cep: "", endereco: "", bairro: "", cidade: "", estado: "",
   // Plano
-  tipo_plano: "individual", nome_plano: "plamor8",
+  tipo_plano: "individual", nome_plano: "plamor8", tipo_titular: "beneficiario",
   valor_mensalidade: "", dia_vencimento: "", data_adesao: "",
   forma_pagamento_preferida: "",
   observacoes: "", status: "ativo",
@@ -220,6 +220,16 @@ export default function TitularForm({ open, onClose, onSubmit, editData }) {
                 <SelectContent>
                   <SelectItem value="individual">Individual</SelectItem>
                   <SelectItem value="familiar">Familiar</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
+
+            <Field label="Tipo de Titular" required>
+              <Select value={form.tipo_titular} onValueChange={v => set("tipo_titular", v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="beneficiario">Beneficiário</SelectItem>
+                  <SelectItem value="pagador">Apenas Pagador</SelectItem>
                 </SelectContent>
               </Select>
             </Field>

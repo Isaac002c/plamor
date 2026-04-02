@@ -103,6 +103,15 @@
       "default": "plamor8",
       "description": "Nome do plano contratado"
     },
+    "tipo_titular": {
+      "type": "string",
+      "enum": [
+        "beneficiario",
+        "pagador"
+      ],
+      "default": "beneficiario",
+      "description": "Se \u00e9 benefici\u00e1rio do plano ou apenas respons\u00e1vel pagador"
+    },
     "valor_mensalidade": {
       "type": "number",
       "description": "Valor da mensalidade em reais"
