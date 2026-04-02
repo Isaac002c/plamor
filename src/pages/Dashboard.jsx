@@ -76,13 +76,21 @@ export default function Dashboard() {
   const criancas = idades.filter(i => i <= 12).length;
   const idosos = idades.filter(i => i >= 60).length;
 
-  // Aniversariantes do dia
+  // Aniversariantes do dia e do mês
   const hoje = new Date();
-  const aniversariantes = [...titulares, ...dependentes].filter(p => {
+  const todasPessoasLista = [...titulares, ...dependentes];
+  const aniversariantesDia = todasPessoasLista.filter(p => {
     if (!p.data_nascimento) return false;
     try {
       const dn = parseISO(p.data_nascimento);
       return dn.getDate() === hoje.getDate() && dn.getMonth() === hoje.getMonth();
+    } catch { return false; }
+  }).length;
+  const aniversariantesMes = todasPessoasLista.filter(p => {
+    if (!p.data_nascimento) return false;
+    try {
+      const dn = parseISO(p.data_nascimento);
+      return dn.getMonth() === hoje.getMonth();
     } catch { return false; }
   }).length;
 
@@ -142,8 +150,8 @@ export default function Dashboard() {
           />
           <StatCard
             title="Aniversariantes Hoje"
-            value={aniversariantes}
-            subtitle="Titulares e dependentes"
+            value={aniversariantesDia}
+            subtitle={`${aniversariantesDia} hoje · ${aniversariantesMes} no mês`}
             icon={Cake}
             colorClass="bg-orange-100 text-orange-700"
           />
