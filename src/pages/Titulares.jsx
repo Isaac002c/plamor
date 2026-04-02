@@ -114,10 +114,10 @@ export default function Titulares() {
                        <StatusBadge status={titular.status} />
                        <PlanoLabel plano={titular.nome_plano} />
                        {titular.tipo_plano === "familiar" && (
-                         <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">Familiar</span>
+                         <span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 font-medium">Familiar</span>
                        )}
                        {titular.tipo_titular === "pagador" && (
-                         <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 font-medium">Apenas Pagador</span>
+                         <span className="text-xs px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-300 font-medium">Apenas Pagador</span>
                        )}
                      </div>
                     <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
