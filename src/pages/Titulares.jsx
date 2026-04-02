@@ -116,6 +116,9 @@ export default function Titulares() {
                        {titular.tipo_plano === "familiar" && (
                          <span className="text-xs px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-medium">Familiar</span>
                        )}
+                       {titular.nome_plano === "igreja" && (
+                         <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 font-medium">✓ Abonado</span>
+                       )}
                        {titular.tipo_titular === "pagador" && (
                          <span className="text-xs px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-300 font-medium">Apenas Pagador</span>
                        )}
