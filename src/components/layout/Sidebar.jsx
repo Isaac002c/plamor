@@ -50,12 +50,12 @@ export default function Sidebar({ open, onClose }) {
         )}
       >
         {/* Logo */}
-        <div className="p-4 border-b border-sidebar-border flex items-center justify-between">
-          <div className="bg-white rounded-lg p-4 flex-1">
+        <div className="p-3 border-b border-sidebar-border flex items-center justify-between">
+          <div className="bg-white rounded-lg p-2.5 flex-1">
             <img 
               src="https://media.base44.com/images/public/69ca9edf5c4f7d6c636a3ae7/ad698b204_logo_grupo-jardim-da-saudade_RcVWV1.png" 
               alt="Jardim da Saudade" 
-              className="h-16 object-contain"
+              className="h-20 object-contain"
             />
           </div>
           <button onClick={onClose} className="lg:hidden text-sidebar-foreground/60 hover:text-sidebar-foreground ml-2">
