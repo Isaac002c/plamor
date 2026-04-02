@@ -125,28 +125,40 @@ export default function Titulares() {
 
                   {/* Coluna 2: Status, Plano, Tipo de Plano */}
                   <div className="flex flex-col gap-1">
-                    <StatusBadge status={titular.status} />
-                    <PlanoLabel plano={titular.nome_plano} />
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium w-fit">
-                      {titular.tipo_plano === "individual" ? "Individual" : "Familiar"}
-                    </span>
+                    <div className="w-32 flex justify-center">
+                      <StatusBadge status={titular.status} />
+                    </div>
+                    <div className="w-32 flex justify-center">
+                      <PlanoLabel plano={titular.nome_plano} />
+                    </div>
+                    <div className="w-32 flex justify-center">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium">
+                        {titular.tipo_plano === "individual" ? "Individual" : "Familiar"}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Coluna 3: Tipo Titular, Abonado/Pago, Valor */}
                   <div className="flex flex-col gap-1">
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-medium w-fit">
-                      {titular.tipo_titular === "beneficiario" ? "Beneficiário" : "Pagador"}
-                    </span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium w-fit ${
-                      titular.nome_plano === "igreja" 
-                        ? "bg-green-100 text-green-700" 
-                        : "bg-yellow-100 text-yellow-700"
-                    }`}>
-                      {titular.nome_plano === "igreja" ? "Abonado" : "Pago"}
-                    </span>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-medium w-fit">
-                      R$ {titular.valor_mensalidade?.toFixed(2)}
-                    </span>
+                    <div className="w-32 flex justify-center">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-medium">
+                        {titular.tipo_titular === "beneficiario" ? "Beneficiário" : "Pagador"}
+                      </span>
+                    </div>
+                    <div className="w-32 flex justify-center">
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                        titular.nome_plano === "igreja" 
+                          ? "bg-green-100 text-green-700" 
+                          : "bg-yellow-100 text-yellow-700"
+                      }`}>
+                        {titular.nome_plano === "igreja" ? "Abonado" : "Pago"}
+                      </span>
+                    </div>
+                    <div className="w-32 flex justify-center">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-medium">
+                        R$ {titular.valor_mensalidade?.toFixed(2)}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Coluna 4: Botão Detalhes */}
