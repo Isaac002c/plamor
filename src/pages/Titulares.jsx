@@ -115,7 +115,6 @@ export default function Titulares() {
                        <PlanoLabel plano={titular.nome_plano} />
                      </div>
                     <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
-                      <span>{titular.cpf}</span>
                       {titular.telefone && (
                         <span className="flex items-center gap-1">
                           <Phone className="w-3 h-3" /> {titular.telefone}
