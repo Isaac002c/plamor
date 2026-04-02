@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
-import { Plus, Search, Phone, Eye, IdCard } from "lucide-react";
+import { Plus, Search, Phone, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -117,15 +117,15 @@ export default function Titulares() {
                       </div>
                     )}
                     {titular.cpf && (
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
-                        <IdCard className="w-3 h-3" /> {titular.cpf}
+                      <div className="text-xs text-muted-foreground">
+                        {titular.cpf}
                       </div>
                     )}
                   </div>
 
                   {/* Coluna 2: Status, Plano, Tipo de Plano */}
                   <div className="flex flex-col gap-1">
-                    <div className="text-center min-w-[100px]"><StatusBadge status={titular.status} /></div>
+                    <StatusBadge status={titular.status} />
                     <PlanoLabel plano={titular.nome_plano} />
                     <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium text-center min-w-[100px]">
                       {titular.tipo_plano === "individual" ? "Individual" : "Familiar"}
