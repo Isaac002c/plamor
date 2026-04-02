@@ -15,7 +15,7 @@ const initialForm = {
   // Endereço
   cep: "", endereco: "", bairro: "", cidade: "", estado: "",
   // Plano
-  tipo_plano: "individual", nome_plano: "basico",
+  tipo_plano: "individual", nome_plano: "plamor8",
   valor_mensalidade: "", dia_vencimento: "", data_adesao: "",
   forma_pagamento_preferida: "",
   observacoes: "", status: "ativo",
@@ -197,15 +197,10 @@ export default function TitularForm({ open, onClose, onSubmit, editData }) {
               </Select>
             </Field>
 
-            <Field label="Plano" required>
-              <Select value={form.nome_plano} onValueChange={v => set("nome_plano", v)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="basico">Básico</SelectItem>
-                  <SelectItem value="essencial">Essencial</SelectItem>
-                  <SelectItem value="premium">Premium</SelectItem>
-                </SelectContent>
-              </Select>
+            <Field label="Plano">
+              <div className="px-3 py-2 rounded-md border border-input bg-muted text-sm text-foreground">
+                Plamor 8
+              </div>
             </Field>
 
             <Field label="Valor Mensalidade (R$)" required>
