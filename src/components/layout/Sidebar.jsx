@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { LayoutDashboard, Users, CreditCard, BarChart2, FileText, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -23,7 +23,15 @@ const modules = [
 
 export default function Sidebar({ open, onClose }) {
   const location = useLocation();
-  const [activeModule, setActiveModule] = useState(0);
+  const [activeModule, setActiveModule] = useState(() => {
+    const path = window.location.pathname;
+    return modules[1].items.some(i => i.path === path) ? 1 : 0;
+  });
+
+  useEffect(() => {
+    const idx = modules[1].items.some(i => i.path === location.pathname) ? 1 : 0;
+    setActiveModule(idx);
+  }, [location.pathname]);
 
   const isActive = (path) =>
     location.pathname === path || (path !== "/" && location.pathname.startsWith(path));
