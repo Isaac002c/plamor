@@ -130,28 +130,28 @@ export default function Dashboard() {
           <StatCard
             title="Total Inscritos"
             value={totalInscritos}
-            subtitle={`${titulares.length} titular(es) + ${dependentes.length} dependente(s)`}
+            subtitle={`${titulares.length} titulares · ${dependentes.length} dependentes`}
             icon={Users}
             colorClass="bg-blue-100 text-blue-700"
           />
           <StatCard
             title="Beneficiários Ativos"
             value={titularesAtivos}
-            subtitle="Titulares com plano ativo"
+            subtitle="Com plano ativo"
             icon={UserCheck}
             colorClass="bg-emerald-100 text-emerald-700"
           />
           <StatCard
             title="Inadimplentes"
             value={totalInadimplentes}
-            subtitle="Titulares com mensalidade atrasada"
+            subtitle="Com mensalidade atrasada"
             icon={UserX}
             colorClass="bg-red-100 text-red-700"
           />
           <StatCard
             title="Aniversariantes Hoje"
             value={aniversariantesDia}
-            subtitle={`${aniversariantesDia} hoje · ${aniversariantesMes} no mês`}
+            subtitle={`Hoje: ${aniversariantesDia} · Mês: ${aniversariantesMes}`}
             icon={Cake}
             colorClass="bg-orange-100 text-orange-700"
           />
