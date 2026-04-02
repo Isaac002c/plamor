@@ -108,15 +108,18 @@ export default function Titulares() {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <Link to={`/titulares/${titular.id}`} className="font-semibold text-foreground hover:text-primary truncate">
-                        {titular.nome}
-                      </Link>
-                      <StatusBadge status={titular.status} />
-                      <PlanoLabel plano={titular.nome_plano} />
-                      {titular.tipo_plano === "familiar" && (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">Familiar</span>
-                      )}
-                    </div>
+                       <Link to={`/titulares/${titular.id}`} className="font-semibold text-foreground hover:text-primary truncate">
+                         {titular.nome}
+                       </Link>
+                       <StatusBadge status={titular.status} />
+                       <PlanoLabel plano={titular.nome_plano} />
+                       {titular.tipo_plano === "familiar" && (
+                         <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">Familiar</span>
+                       )}
+                       {titular.tipo_titular === "pagador" && (
+                         <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 font-medium">Apenas Pagador</span>
+                       )}
+                     </div>
                     <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
                       <span>{titular.cpf}</span>
                       {titular.telefone && (
