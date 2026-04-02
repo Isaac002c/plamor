@@ -12,7 +12,7 @@ function StatCard({ title, value, subtitle, icon: Icon, colorClass = "bg-primary
           <Icon className="w-5 h-5" />
         </div>
         <div>
-          <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wide">{title}</p>
+          <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide whitespace-nowrap">{title}</p>
           <p className="text-2xl font-bold mt-0.5">{value}</p>
           {subtitle && <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>}
         </div>
