@@ -13,7 +13,7 @@ const statusConfig = {
 export default function StatusBadge({ status }) {
   const config = statusConfig[status] || { label: status, className: "bg-gray-100 text-gray-800" };
   return (
-    <Badge variant="outline" className={cn("font-medium text-xs", config.className)}>
+    <Badge variant="outline" className={cn("font-medium text-xs text-center", config.className)}>
       {config.label}
     </Badge>
   );
