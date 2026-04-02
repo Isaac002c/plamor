@@ -150,7 +150,7 @@ export default function Titulares() {
                   </div>
 
                   {/* Coluna 4: Botão Detalhes */}
-                  <div className="flex justify-end mt-3">
+                  <div className="flex justify-end mt-6">
                     <Link to={`/titulares/${titular.id}`}>
                       <Button variant="outline" size="sm" className="gap-2">
                         <Eye className="w-4 h-4" /> Detalhes
