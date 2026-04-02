@@ -105,33 +105,33 @@ export default function Titulares() {
           {filtered.map(titular => (
             <Card key={titular.id} className="hover:shadow-md transition-shadow">
               <CardContent className="p-4">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                       <Link to={`/titulares/${titular.id}`} className="font-semibold text-foreground hover:text-primary truncate">
-                         {titular.nome}
-                       </Link>
-                       <StatusBadge status={titular.status} />
-                       <PlanoLabel plano={titular.nome_plano} />
-                     </div>
-                    <div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
-                      {titular.telefone && (
-                        <span className="flex items-center gap-1">
-                          <Phone className="w-3 h-3" /> {titular.telefone}
-                        </span>
-                      )}
-                      {titular.nome_plano === "igreja" ? (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium">Plano abonado</span>
-                      ) : (
-                        <span className="font-medium text-foreground">R$ {titular.valor_mensalidade?.toFixed(2)}/mês</span>
-                      )}
-                    </div>
+                <div className="grid grid-cols-2 gap-4 items-start sm:grid-cols-3">
+                  <div className="col-span-1">
+                    <Link to={`/titulares/${titular.id}`} className="font-semibold text-foreground hover:text-primary truncate block">
+                      {titular.nome}
+                    </Link>
+                    {titular.telefone && (
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+                        <Phone className="w-3 h-3" /> {titular.telefone}
+                      </div>
+                    )}
                   </div>
-                  <Link to={`/titulares/${titular.id}`}>
-                    <Button variant="outline" size="sm" className="gap-2">
-                      <Eye className="w-4 h-4" /> Detalhes
-                    </Button>
-                  </Link>
+                  <div className="col-span-1 flex flex-col gap-1">
+                    <StatusBadge status={titular.status} />
+                    <PlanoLabel plano={titular.nome_plano} />
+                  </div>
+                  <div className="col-span-1 sm:col-span-1 flex flex-col gap-1 items-end">
+                    {titular.nome_plano === "igreja" ? (
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium">Plano abonado</span>
+                    ) : (
+                      <span className="font-medium text-foreground text-sm">R$ {titular.valor_mensalidade?.toFixed(2)}/mês</span>
+                    )}
+                    <Link to={`/titulares/${titular.id}`}>
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <Eye className="w-4 h-4" /> Detalhes
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </CardContent>
             </Card>
