@@ -83,7 +83,7 @@ export default function TitularForm({ open, onClose, onSubmit, editData }) {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-serif text-xl">
+          <DialogTitle className="font-serif text-xl text-muted-foreground">
             {editData ? "Editar Titular" : "Novo Cadastro"}
           </DialogTitle>
         </DialogHeader>

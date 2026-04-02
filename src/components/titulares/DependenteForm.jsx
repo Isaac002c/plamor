@@ -49,7 +49,7 @@ export default function DependenteForm({ open, onClose, onSubmit, titularId, tit
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-serif text-xl">Adicionar Dependente</DialogTitle>
+          <DialogTitle className="font-serif text-xl text-muted-foreground">Adicionar Dependente</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
