@@ -4,24 +4,17 @@ import { cn } from "@/lib/utils";
 
 const modules = [
 {
-  label: null,
-  items: [
-  { label: "Painel", icon: LayoutDashboard, path: "/" }]
-
-},
-{
   label: "Secretaria",
   items: [
-  { label: "Titulares", icon: Users, path: "/titulares" },
-  { label: "Mensalidades", icon: CreditCard, path: "/mensalidades" },
-  { label: "Rel. de Pessoas", icon: UserSquare2, path: "/relatorio-pessoas" }]
-
+  { label: "Dashboard", icon: LayoutDashboard, path: "/" },
+  { label: "Pessoas", icon: Users, path: "/titulares" },
+  { label: "Relatórios", icon: FileText, path: "/relatorio-pessoas" }]
 },
 {
   label: "Tesouraria",
   items: [
-  { label: "Rel. Financeiro", icon: BarChart2, path: "/relatorio-financeiro" }]
-
+  { label: "Rel. Financeiro", icon: BarChart2, path: "/relatorio-financeiro" },
+  { label: "Mensalidades", icon: CreditCard, path: "/mensalidades" }]
 }];
 
 
