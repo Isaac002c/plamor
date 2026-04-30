@@ -7,11 +7,15 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import AppLayout from '@/components/layout/AppLayout';
 import Dashboard from '@/pages/Dashboard';
-import Titulares from '@/pages/Titulares';
-import TitularDetalhes from '@/pages/TitularDetalhes';
+import Membros from '@/pages/Membros';
+import MembroDetalhes from '@/pages/MembroDetalhes';
 import Mensalidades from '@/pages/Mensalidades';
 import RelatorioPessoas from '@/pages/RelatorioPessoas';
 import RelatorioFinanceiro from '@/pages/RelatorioFinanceiro';
+import Financeiro from '@/pages/Financeiro';
+import Cobranca from '@/pages/Cobranca';
+import Igrejas from '@/pages/Igrejas';
+import Grupos from '@/pages/Grupos';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -41,11 +45,15 @@ const AuthenticatedApp = () => {
     <Routes>
       <Route element={<AppLayout />}>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/titulares" element={<Titulares />} />
-        <Route path="/titulares/:id" element={<TitularDetalhes />} />
+        <Route path="/membros" element={<Membros />} />
+        <Route path="/membros/:id" element={<MembroDetalhes />} />
         <Route path="/mensalidades" element={<Mensalidades />} />
         <Route path="/relatorio-pessoas" element={<RelatorioPessoas />} />
         <Route path="/relatorio-financeiro" element={<RelatorioFinanceiro />} />
+        <Route path="/financeiro" element={<Financeiro />} />
+        <Route path="/cobranca" element={<Cobranca />} />
+        <Route path="/igrejas" element={<Igrejas />} />
+        <Route path="/grupos" element={<Grupos />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

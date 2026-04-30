@@ -140,6 +140,46 @@
       "type": "string",
       "description": "Observa\u00e7\u00f5es gerais"
     },
+    "cargo": {
+      "type": "string",
+      "enum": [
+        "membro",
+        "obreiro",
+        "diacono",
+        "presbitero",
+        "evangelista",
+        "pastor",
+        "missionario",
+        "visitante"
+      ],
+      "default": "membro",
+      "description": "Cargo ou função na igreja"
+    },
+    "data_batismo": {
+      "type": "string",
+      "format": "date",
+      "description": "Data do batismo"
+    },
+    "como_chegou": {
+      "type": "string",
+      "enum": [
+        "convite",
+        "evento",
+        "midia_social",
+        "transferecia",
+        "outro"
+      ],
+      "description": "Como chegou à igreja"
+    },
+    "igreja_id": {
+      "type": "string",
+      "description": "ID da igreja que o membro pertence"
+    },
+    "data_entrada": {
+      "type": "string",
+      "format": "date",
+      "description": "Data de entrada na igreja"
+    },
     "status": {
       "type": "string",
       "enum": [

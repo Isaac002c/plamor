@@ -1,0 +1,43 @@
+{
+  "name": "MembroGrupo",
+  "type": "object",
+  "properties": {
+    "membro_id": {
+      "type": "string",
+      "description": "ID do membro"
+    },
+    "grupo_id": {
+      "type": "string",
+      "description": "ID do grupo"
+    },
+    "data_entrada": {
+      "type": "string",
+      "format": "date",
+      "description": "Data de entrada no grupo"
+    },
+    "funcao": {
+      "type": "string",
+      "enum": [
+        "membro",
+        "lider",
+        "secretario",
+        "auxiliar"
+      ],
+      "default": "membro",
+      "description": "Função no grupo"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ativo",
+        "inativo"
+      ],
+      "default": "ativo",
+      "description": "Status no grupo"
+    }
+  },
+  "required": [
+    "membro_id",
+    "grupo_id"
+  ]
+}

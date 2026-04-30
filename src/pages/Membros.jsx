@@ -10,44 +10,32 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import MembroForm from "@/components/membros/MembroForm";
 import StatusBadge from "@/components/shared/StatusBadge";
 import CargoLabel from "@/components/shared/CargoLabel";
-import { gerarMensalidadesAutomaticas, abonarMensalidades } from "@/lib/gerarMensalidades";
 
-export default function Titulares() {
+export default function Membros() {
   const [showForm, setShowForm] = useState(false);
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("todos");
   const queryClient = useQueryClient();
 
-  const { data: titulares = [], isLoading } = useQuery({
-    queryKey: ["titulares"],
-    queryFn: () => base44.entities.Titular.list("-created_date"), // TODO: change to Membro
+  const { data: membros = [], isLoading } = useQuery({
+    queryKey: ["membros"],
+    queryFn: () => base44.entities.Titular.list("-created_date"),  // Keep Titular entity for now
   });
 
   const createMutation = useMutation({
     mutationFn: async (data) => {
-      const titular = await base44.entities.Titular.create(data);
-      
-      // Gerar mensalidades automaticamente
-      if (data.nome_plano === "plamor8") {
-        await gerarMensalidadesAutomaticas(titular);
-      } else if (data.nome_plano === "igreja") {
-        // Para Igreja, gerar abonadas
-        await gerarMensalidadesAutomaticas({ ...titular, nome_plano: "plamor8" });
-        await abonarMensalidades(titular.id);
-      }
-      
-      return titular;
+      const membro = await base44.entities.Titular.create(data);
+      return membro;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["titulares"] });
-      queryClient.invalidateQueries({ queryKey: ["mensalidades"] });
+      queryClient.invalidateQueries({ queryKey: ["membros"] });
       setShowForm(false);
     },
   });
 
-  const filtered = titulares.filter(t => {
-    const matchSearch = t.nome?.toLowerCase().includes(search.toLowerCase()) || t.cpf?.includes(search);
-    const matchStatus = filterStatus === "todos" || t.status === filterStatus;
+  const filtered = membros.filter(m => {
+    const matchSearch = m.nome?.toLowerCase().includes(search.toLowerCase()) || m.cpf?.includes(search);
+    const matchStatus = filterStatus === "todos" || m.status === filterStatus;
     return matchSearch && matchStatus;
   });
 
@@ -64,17 +52,16 @@ export default function Titulares() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-serif font-bold">Membros</h1>
-          <p className="text-muted-foreground text-sm mt-1">{titulares.length} membros</p>
+          <p className="text-muted-foreground text-sm mt-1">{membros.length} cadastrados</p>
         </div>
         <Button onClick={() => setShowForm(true)} className="gap-2">
           <Plus className="w-4 h-4" /> Novo Membro
         </Button>
-
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute left Asc left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder="Buscar por nome ou CPF..."
             value={search}
@@ -103,54 +90,48 @@ export default function Titulares() {
         </Card>
       ) : (
         <div className="grid gap-3">
-          {filtered.map(titular => (
-            <Card key={titular.id} className="hover:shadow-md transition-shadow">
+          {filtered.map(membro => (
+            <Card key={membro.id} className="hover:shadow-md transition-shadow">
               <CardContent className="p-4">
                 <div className="grid grid-cols-4 gap-3 items-start">
                   {/* Coluna 1: Nome + Telefone + CPF */}
                   <div>
-                    <Link to={`/titulares/${titular.id}`} className="font-semibold text-foreground hover:text-primary truncate block">
-                      {titular.nome}
+                    <Link to={`/membros/${membro.id}`} className="font-semibold text-foreground hover:text-primary truncate block">
+                      {membro.nome}
                     </Link>
-                    {titular.telefone && (
+                    {membro.telefone && (
                       <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
-                        <Phone className="w-3 h-3" /> {titular.telefone}
+                        <Phone className="w-3 h-3" /> {membro.telefone}
                       </div>
                     )}
-                    {titular.cpf && (
+                    {membro.cpf && (
                       <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <User className="w-3 h-3" /> {titular.cpf}
+                        <User className="w-3 h-3" /> {membro.cpf}
                       </div>
                     )}
                   </div>
 
-                  {/* Coluna 2: Status, Plano, Tipo de Plano */}
+                  {/* Coluna 2: Status, Cargo */}
                   <div className="flex flex-col gap-1">
-                    <StatusBadge status={titular.status} />
-                    <CargoLabel cargo={titular.cargo} />
-
+                    <StatusBadge status={membro.status} />
+                    <CargoLabel cargo={membro.cargo} />
                   </div>
 
-                  {/* Coluna 3: Tipo Titular, Abonado/Pago, Valor */}
+                  {/* Coluna 3: Tipo, Batismo */}
                   <div className="flex flex-col gap-1">
                     <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-medium text-center min-w-[100px]">
-                      {titular.tipo_titular === "beneficiario" ? "Beneficiário" : "Pagador"}
+                      {membro.sexo === "masculino" ? "Masculino" : "Feminino"}
                     </span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium text-center min-w-[100px] ${
-                      titular.nome_plano === "igreja" 
-                        ? "bg-green-100 text-green-700" 
-                        : "bg-yellow-100 text-yellow-700"
-                    }`}>
-                      {titular.nome_plano === "igreja" ? "Abonado" : "Pago"}
-                    </span>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-medium text-center min-w-[100px]">
-                      R$ {titular.valor_mensalidade?.toFixed(2)}
-                    </span>
+                    {membro.data_batismo && (
+                      <span className="text-xs text-muted-foreground text-center">
+                        Bat. {new Date(membro.data_batismo).toLocaleDateString('pt-BR', {day: 'numeric', month: 'short'})}
+                      </span>
+                    )}
                   </div>
 
                   {/* Coluna 4: Botão Detalhes */}
                   <div className="flex justify-end mt-6">
-                    <Link to={`/titulares/${titular.id}`}>
+                    <Link to={`/membros/${membro.id}`}>
                       <Button variant="outline" size="sm" className="gap-2">
                         <Eye className="w-4 h-4" /> Detalhes
                       </Button>
@@ -163,7 +144,7 @@ export default function Titulares() {
         </div>
       )}
 
-      <TitularForm
+      <MembroForm
         open={showForm}
         onClose={() => setShowForm(false)}
         onSubmit={(data) => createMutation.mutate(data)}
@@ -171,3 +152,4 @@ export default function Titulares() {
     </div>
   );
 }
+

@@ -1,0 +1,62 @@
+{
+  "name": "ContaBancaria",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "description": "Nome da conta bancária"
+    },
+    "tipo": {
+      "type": "string",
+      "enum": [
+        "corrente",
+        "poupanca",
+        "pix",
+        "caixa"
+      ],
+      "description": "Tipo de conta"
+    },
+    "banco": {
+      "type": "string",
+      "description": "Nome do banco"
+    },
+    "agencia": {
+      "type": "string",
+      "description": "Número da agência"
+    },
+    "conta": {
+      "type": "string",
+      "description": "Número da conta"
+    },
+    "pix": {
+      "type": "string",
+      "description": "Chave PIX"
+    },
+    "saldo_inicial": {
+      "type": "number",
+      "description": "Saldo inicial"
+    },
+    "saldo_atual": {
+      "type": "number",
+      "description": "Saldo atual"
+    },
+    "igreja_id": {
+      "type": "string",
+      "description": "ID da igreja"
+    },
+    "ativa": {
+      "type": "boolean",
+      "default": true,
+      "description": "Conta ativa?"
+    },
+    "obs": {
+      "type": "string",
+      "description": "Observações"
+    }
+  },
+  "required": [
+    "nome",
+    "tipo",
+    "igreja_id"
+  ]
+}

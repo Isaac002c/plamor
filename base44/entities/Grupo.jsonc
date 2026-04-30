@@ -1,0 +1,68 @@
+{
+  "name": "Grupo",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "description": "Nome do grupo ou ministério"
+    },
+    "descricao": {
+      "type": "string",
+      "description": "Descrição do grupo"
+    },
+    "tipo": {
+      "type": "string",
+      "enum": [
+        "kids",
+        "jovens",
+        "adultos",
+        "idosos",
+        "ministerio",
+        "escola_biblica",
+        "celula",
+        "outro"
+      ],
+      "default": "outro",
+      "description": "Tipo do grupo"
+    },
+    "lider_id": {
+      "type": "string",
+      "description": "ID do membro líder do grupo"
+    },
+    "igreja_id": {
+      "type": "string",
+      "description": "ID da igreja vinculada"
+    },
+    "dia_reuniao": {
+      "type": "string",
+      "enum": [
+        "domingo",
+        "segunda",
+        "terca",
+        "quarta",
+        "quinta",
+        "sexta",
+        "sabado"
+      ],
+      "description": "Dia da semana da reunião"
+    },
+    "horario_reuniao": {
+      "type": "string",
+      "description": "Horário da reunião (ex: 19:30)"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ativo",
+        "inativo"
+      ],
+      "default": "ativo",
+      "description": "Status do grupo"
+    }
+  },
+  "required": [
+    "nome",
+    "tipo",
+    "igreja_id"
+  ]
+}

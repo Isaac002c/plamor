@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Card, CardContent } from "@/components/ui/card";
 import StatusBadge from "@/components/shared/StatusBadge";
-import PlanoLabel from "@/components/shared/PlanoLabel";
+import CargoLabel from "@/components/shared/CargoLabel";
 import { differenceInYears, format, parseISO } from "date-fns";
 import { Users } from "lucide-react";
 
@@ -19,7 +19,7 @@ const formatDate = (d) => {
 export default function RelatorioPessoas() {
   const { data: titulares = [], isLoading } = useQuery({
     queryKey: ["titulares"],
-    queryFn: () => base44.entities.Titular.list("-data_adesao"),
+    queryFn: () => base44.entities.Titular.list("-data_adesao"),  // TODO: change to Membro after Base44 sync
   });
 
   const ativos = titulares.filter(t => t.status === "ativo").length;
@@ -38,7 +38,7 @@ export default function RelatorioPessoas() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl md:text-3xl font-serif font-bold">Relatório de Pessoas</h1>
-        <p className="text-muted-foreground text-sm mt-1">Cadastro geral de titulares inscritos no plano</p>
+        <p className="text-muted-foreground text-sm mt-1">Relatório de membros da igreja</p>
       </div>
 
       {/* Resumo */}
@@ -68,7 +68,7 @@ export default function RelatorioPessoas() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-muted/40">
-                  {["Nome Completo", "CPF", "Data de Entrada", "Idade", "Plano", "Tipo", "Status"].map(col => (
+                  {["Nome Completo", "CPF", "Data de Entrada", "Idade", "Cargo", "Status"].map(col => (
                     <th key={col} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground whitespace-nowrap">{col}</th>
                   ))}
                 </tr>
@@ -80,9 +80,9 @@ export default function RelatorioPessoas() {
                     <td className="px-4 py-3 text-muted-foreground">{t.cpf}</td>
                     <td className="px-4 py-3">{formatDate(t.data_adesao)}</td>
                     <td className="px-4 py-3">{calcIdade(t.data_nascimento)}</td>
-                    <td className="px-4 py-3"><PlanoLabel plano={t.nome_plano} /></td>
-                    <td className="px-4 py-3 capitalize text-muted-foreground">{t.tipo_plano}</td>
+                    <td className="px-4 py-3"><CargoLabel cargo={t.cargo} /></td>
                     <td className="px-4 py-3"><StatusBadge status={t.status} /></td>
+
                   </tr>
                 ))}
               </tbody>

@@ -32,7 +32,7 @@ const Field = ({ label, required, children }) => (
 
 const UFS = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
 
-export default function DependenteForm({ open, onClose, onSubmit, titularId, titular }) {
+export default function DependenteForm({ open, onClose, onSubmit, membroId, _membro }) {
   const [form, setForm] = useState(initialForm);
 
   const set = (field, value) => {
@@ -41,7 +41,7 @@ export default function DependenteForm({ open, onClose, onSubmit, titularId, tit
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ ...form, titular_id: titularId });
+    onSubmit({ ...form, membro_id: membroId });
     setForm(initialForm);
   };
 
@@ -132,7 +132,7 @@ export default function DependenteForm({ open, onClose, onSubmit, titularId, tit
                 onCheckedChange={checked => set("mesmo_endereco", checked)}
               />
               <Label htmlFor="mesmo_endereco" className="text-sm cursor-pointer mb-0">
-                Mesmo endereço do titular
+                Mesmo endereço do membro
               </Label>
             </div>
 
@@ -177,3 +177,4 @@ export default function DependenteForm({ open, onClose, onSubmit, titularId, tit
     </Dialog>
   );
 }
+

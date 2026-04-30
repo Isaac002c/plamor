@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, CreditCard, BarChart2, FileText, X, ChevronDown } from "lucide-react";
+import { LayoutDashboard, Users, CreditCard, BarChart2, FileText, Wallet, MessageCircle, Church, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const modules = [
@@ -13,9 +13,14 @@ const modules = [
         icon: Users, 
         path: "/pessoas",
         submenu: [
-          { label: "Cadastro", path: "/titulares" },
-          { label: "Ocorrências", path: "/ocorrencias" },
+          { label: "Membros", path: "/membros" },
+          { label: "Grupos", path: "/grupos" },
         ]
+      },
+      { 
+        label: "Igrejas", 
+        icon: Church, 
+        path: "/igrejas",
       },
       { 
         label: "Relatórios", 
@@ -30,7 +35,9 @@ const modules = [
   {
     label: "Tesourária",
     items: [
-      { label: "Mensalidades", icon: CreditCard, path: "/mensalidades" },
+      { label: "Contribuições", icon: CreditCard, path: "/mensalidades" },
+      { label: "Financeiro", icon: Wallet, path: "/financeiro" },
+      { label: "Cobrança", icon: MessageCircle, path: "/cobranca" },
       { label: "Rel. Financeiro", icon: BarChart2, path: "/relatorio-financeiro" },
     ],
   },

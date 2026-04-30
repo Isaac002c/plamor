@@ -14,28 +14,8 @@ const initialForm = {
   telefone: "", telefone2: "", email: "",
   // Endereço
   cep: "", endereco: "", bairro: "", cidade: "", estado: "",
-  // Plano
-  tipo_plano: "individual", nome_plano: "plamor8", tipo_titular: "beneficiario",
-  valor_mensalidade: "", dia_vencimento: "", data_adesao: "",
-  forma_pagamento_preferida: "",
-  observacoes: "",
-};
-
-const calcularIdade = (dataNascimento) => {
-  if (!dataNascimento) return null;
-  const hoje = new Date();
-  const nascimento = new Date(dataNascimento);
-  let idade = hoje.getFullYear() - nascimento.getFullYear();
-  if (hoje.getMonth() < nascimento.getMonth() || (hoje.getMonth() === nascimento.getMonth() && hoje.getDate() < nascimento.getDate())) {
-    idade--;
-  }
-  return idade;
-};
-
-const calcularValorPorIdade = (dataNascimento) => {
-  const idade = calcularIdade(dataNascimento);
-  if (idade === null) return 0;
-  return idade >= 65 ? 38 : 26;
+  // Igreja
+  cargo: "", data_batismo: "", observacoes: "",
 };
 
 const SectionTitle = ({ children }) => (
@@ -54,28 +34,18 @@ const Field = ({ label, required, children }) => (
 
 const UFS = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
 
-export default function TitularForm({ open, onClose, onSubmit, editData }) {
+const cargos = ["lider", "diacono", "membro", "batizando", "visitante", "outro"];
+
+export default function MembroForm({ open, onClose, onSubmit, editData }) {
   const [form, setForm] = useState(editData || initialForm);
-  const [dependentes, setDependentes] = useState([]);
 
   const set = (field, value) => {
-    const newForm = { ...form, [field]: value };
-    
-    // Auto-calcular valor se data_nascimento for alterada
-    if (field === "data_nascimento") {
-      newForm.valor_mensalidade = calcularValorPorIdade(value);
-    }
-    
-    setForm(newForm);
+    setForm({ ...form, [field]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({
-      ...form,
-      valor_mensalidade: parseFloat(form.valor_mensalidade) || 0,
-      dia_vencimento: parseInt(form.dia_vencimento) || 1,
-    });
+    onSubmit(form);
     if (!editData) setForm(initialForm);
   };
 
@@ -84,7 +54,7 @@ export default function TitularForm({ open, onClose, onSubmit, editData }) {
       <DialogContent className="max-w-2xl max-h-[92vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-serif text-xl text-muted-foreground/70">
-            {editData ? "Editar Titular" : "Novo Cadastro"}
+            {editData ? "Editar Membro" : "Novo Cadastro"}
           </DialogTitle>
         </DialogHeader>
 
@@ -196,67 +166,21 @@ export default function TitularForm({ open, onClose, onSubmit, editData }) {
               <Input value={form.cidade} onChange={e => set("cidade", e.target.value)} />
             </Field>
 
-            {/* Dados do Plano */}
-            <SectionTitle>Dados do Plano</SectionTitle>
+            {/* Igreja */}
+            <SectionTitle>Dados da Igreja</SectionTitle>
 
-            <Field label="Data de Adesão">
-              <Input type="date" value={form.data_adesao} onChange={e => set("data_adesao", e.target.value)} />
-            </Field>
-
-            <Field label="Tipo de Plano" required>
-              <Select value={form.tipo_plano} onValueChange={v => set("tipo_plano", v)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+            <Field label="Cargo" required>
+              <Select value={form.cargo} onValueChange={v => set("cargo", v)}>
+                <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="individual">Individual</SelectItem>
-                  <SelectItem value="familiar">Familiar</SelectItem>
+                  {cargos.map(c => <SelectItem key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</SelectItem>)}
                 </SelectContent>
               </Select>
             </Field>
 
-            <Field label="Tipo de Titular" required>
-              <Select value={form.tipo_titular} onValueChange={v => set("tipo_titular", v)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="beneficiario">Beneficiário</SelectItem>
-                  <SelectItem value="pagador">Apenas Pagador</SelectItem>
-                </SelectContent>
-              </Select>
+            <Field label="Data de Batismo">
+              <Input type="date" value={form.data_batismo} onChange={e => set("data_batismo", e.target.value)} />
             </Field>
-
-            <Field label="Plano" required>
-              <Select value={form.nome_plano} onValueChange={v => set("nome_plano", v)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="plamor8">Plamor 8</SelectItem>
-                  <SelectItem value="igreja">Igreja</SelectItem>
-                </SelectContent>
-              </Select>
-            </Field>
-
-            <Field label="Valor Mensalidade (R$)" required>
-              <Input type="number" step="0.01" value={form.valor_mensalidade} onChange={e => set("valor_mensalidade", e.target.value)} required disabled={form.nome_plano === "plamor8" || form.nome_plano === "igreja"} />
-              {form.nome_plano === "plamor8" && <p className="text-xs text-muted-foreground mt-1">Calculado automaticamente por idade</p>}
-              {form.nome_plano === "igreja" && <p className="text-xs text-green-400 mt-1 font-medium">✓ Plano abonado (sem mensalidade)</p>}
-            </Field>
-
-            <Field label="Dia do Vencimento" required>
-              <Input type="number" min="1" max="31" value={form.dia_vencimento} onChange={e => set("dia_vencimento", e.target.value)} required />
-            </Field>
-
-            <div className="sm:col-span-2">
-              <Field label="Forma de Pagamento Preferida">
-                <Select value={form.forma_pagamento_preferida} onValueChange={v => set("forma_pagamento_preferida", v)}>
-                  <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="dinheiro">Dinheiro</SelectItem>
-                    <SelectItem value="pix">PIX</SelectItem>
-                    <SelectItem value="cartao">Cartão</SelectItem>
-                    <SelectItem value="boleto">Boleto</SelectItem>
-                    <SelectItem value="transferencia">Transferência</SelectItem>
-                  </SelectContent>
-                </Select>
-              </Field>
-            </div>
 
             {/* Observações */}
             <SectionTitle>Observações</SectionTitle>
@@ -266,7 +190,7 @@ export default function TitularForm({ open, onClose, onSubmit, editData }) {
                 value={form.observacoes}
                 onChange={e => set("observacoes", e.target.value)}
                 rows={3}
-                placeholder="Anotações adicionais sobre o titular..."
+                placeholder="Anotações adicionais sobre o membro..."
                 className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring resize-none"
               />
             </div>
@@ -274,10 +198,11 @@ export default function TitularForm({ open, onClose, onSubmit, editData }) {
 
           <div className="flex justify-end gap-3 pt-2 border-t">
             <Button type="button" variant="outline" onClick={onClose}>Cancelar</Button>
-            <Button type="submit" className="min-w-[120px]">{editData ? "Salvar Alterações" : "Cadastrar Titular"}</Button>
+            <Button type="submit" className="min-w-[120px]">{editData ? "Salvar Alterações" : "Cadastrar Membro"}</Button>
           </div>
         </form>
       </DialogContent>
     </Dialog>
   );
 }
+

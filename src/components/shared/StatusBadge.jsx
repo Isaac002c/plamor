@@ -1,5 +1,4 @@
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 
 const statusConfig = {
   pago: { label: "Pago", className: "bg-emerald-100 text-emerald-800 border-emerald-200" },

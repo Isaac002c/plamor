@@ -5,29 +5,30 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
-export default function MensalidadeForm({ open, onClose, onSubmit, titular }) {
+export default function ContribuicaoForm({ open, onClose, onSubmit, membro }) {
   const [form, setForm] = useState({
-    mes_referencia: "",
-    valor: titular?.valor_mensalidade || "",
+    mes_ano: "",
+    valor_dizimo: membro?.valor_mensalidade || "",
     data_vencimento: "",
     status: "pendente",
     forma_pagamento: "",
     data_pagamento: "",
     observacao: "",
+    tipo: "dizimo",
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit({
       ...form,
-      titular_id: titular.id,
-      titular_nome: titular.nome,
-      valor: parseFloat(form.valor) || 0,
+      membro_id: membro.id,
+      membro_nome: membro.nome,
+      valor_dizimo: parseFloat(form.valor_dizimo) || 0,
     });
     setForm({
-      mes_referencia: "", valor: titular?.valor_mensalidade || "",
+      mes_ano: "", valor_dizimo: membro?.valor_mensalidade || "",
       data_vencimento: "", status: "pendente",
-      forma_pagamento: "", data_pagamento: "", observacao: "",
+      forma_pagamento: "", data_pagamento: "", observacao: "", tipo: "dizimo",
     });
   };
 
@@ -35,16 +36,27 @@ export default function MensalidadeForm({ open, onClose, onSubmit, titular }) {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle className="font-serif">Gerar Mensalidade</DialogTitle>
+          <DialogTitle className="font-serif">Gerar Contribuição</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label>Mês Referência * (ex: 2026-03)</Label>
-            <Input value={form.mes_referencia} onChange={e => setForm(p => ({ ...p, mes_referencia: e.target.value }))} placeholder="2026-03" required />
+            <Label>Mês/Ano Referência * (ex: 2026-03)</Label>
+            <Input value={form.mes_ano} onChange={e => setForm(p => ({ ...p, mes_ano: e.target.value }))} placeholder="2026-03" required />
+          </div>
+          <div>
+            <Label>Tipo de Contribuição</Label>
+            <Select value={form.tipo} onValueChange={v => setForm(p => ({ ...p, tipo: v }))}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="dizimo">Dízimo</SelectItem>
+                <SelectItem value="oferta">Oferta</SelectItem>
+                <SelectItem value="doacao">Doação</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div>
             <Label>Valor (R$) *</Label>
-            <Input type="number" step="0.01" value={form.valor} onChange={e => setForm(p => ({ ...p, valor: e.target.value }))} required />
+            <Input type="number" step="0.01" value={form.valor_dizimo} onChange={e => setForm(p => ({ ...p, valor_dizimo: e.target.value }))} required />
           </div>
           <div>
             <Label>Data Vencimento *</Label>
@@ -95,3 +107,4 @@ export default function MensalidadeForm({ open, onClose, onSubmit, titular }) {
     </Dialog>
   );
 }
+

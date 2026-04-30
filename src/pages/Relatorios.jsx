@@ -1,13 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import StatusBadge from "@/components/shared/StatusBadge";
-import PlanoLabel from "@/components/shared/PlanoLabel";
+import CargoLabel from "@/components/shared/CargoLabel";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
 import { differenceInYears, format, parseISO } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import { AlertTriangle, Clock, CheckCircle2, Users } from "lucide-react";
 
 const calcIdade = (data_nascimento) => {
@@ -125,7 +124,7 @@ function RelTitulares({ titulares }) {
       </div>
       <div className="overflow-x-auto rounded-lg border">
         <table className="w-full text-sm">
-          <TableHeader cols={["Nome Completo", "CPF", "Data de Entrada", "Idade", "Plano", "Tipo", "Status"]} />
+          <TableHeader cols={["Nome Completo", "CPF", "Data de Entrada", "Idade", "Cargo", "Status"]} />
           <tbody className="divide-y">
             {titulares.map(t => (
               <tr key={t.id} className="hover:bg-muted/20 transition-colors">
@@ -138,11 +137,9 @@ function RelTitulares({ titulares }) {
                     : <span className="text-muted-foreground">—</span>
                   }
                 </td>
-                <td className="px-4 py-3"><PlanoLabel plano={t.nome_plano} /></td>
-                <td className="px-4 py-3">
-                  <span className="capitalize text-muted-foreground">{t.tipo_plano}</span>
-                </td>
+                <td className="px-4 py-3"><CargoLabel cargo={t.cargo} /></td>
                 <td className="px-4 py-3"><StatusBadge status={t.status} /></td>
+
               </tr>
             ))}
           </tbody>
