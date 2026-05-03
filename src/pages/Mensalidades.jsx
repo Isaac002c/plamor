@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import churchos from "@/api/churchos.js";
 import { Link } from "react-router-dom";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -16,12 +16,12 @@ export default function Mensalidades() {
 
   const { data: mensalidades = [], isLoading } = useQuery({
     queryKey: ["mensalidades"],
-    queryFn: () => base44.entities.Mensalidade.list("-data_vencimento", 200),
+    queryFn: () => churchos.financeiro.mensalidades({ sort: '-data_vencimento', limit: 200 }),
   });
 
   const { data: titulares = [] } = useQuery({
     queryKey: ["titulares"],
-    queryFn: () => base44.entities.Titular.list(),
+    queryFn: () => churchos.membros.listar(),
   });
 
   const titularesMap = {};

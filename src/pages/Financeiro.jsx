@@ -1,6 +1,6 @@
-import { useState } from "react";
+  import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import churchos from "@/api/churchos.js";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,16 +34,16 @@ export default function Financeiro() {
 
   const { data: transacoes = [], isLoading } = useQuery({
     queryKey: ["transacoes"],
-    queryFn: () => base44.entities.Transacao.list("-data", 500),
+    queryFn: () => churchos.financeiro.transacoes({ sort: '-data', limit: 500 }),
   });
 
   const { data: titulares = [] } = useQuery({
     queryKey: ["titulares"],
-    queryFn: () => base44.entities.Titular.list(),
+    queryFn: () => churchos.membros.listar(),
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Transacao.create(data),
+    mutationFn: (data) => churchos.financeiro.criarTransacao(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transacoes"] });
       setShowForm(false);
@@ -51,7 +51,7 @@ export default function Financeiro() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Transacao.delete(id),
+    mutationFn: (id) => churchos.financeiro.excluirTransacao(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["transacoes"] }),
   });
 
