@@ -1,4 +1,4 @@
-import { base44 } from "@/api/base44Client";
+import churchos from "@/api/churchos.js";
 import { addMonths, format } from "date-fns";
 
 export async function gerarMensalidadesAutomaticas(titular, dependentes = []) {
@@ -28,15 +28,21 @@ export async function gerarMensalidadesAutomaticas(titular, dependentes = []) {
 
   // Criar todas as mensalidades
   if (mensalidades.length > 0) {
-    await base44.entities.Mensalidade.bulkCreate(mensalidades);
+    for (const mensalidade of mensalidades) {
+      await churchos.financeiro.registrarMensalidade({
+        ...mensalidade,
+        membro_id: mensalidade.titular_id,
+        membro_nome: mensalidade.titular_nome
+      });
+    }
   }
 }
 
 export async function abonarMensalidades(titularId) {
-  const mensalidades = await base44.entities.Mensalidade.filter({ titular_id: titularId });
+  const mensalidades = await churchos.financeiro.mensalidades({ membro_id: titularId });
 
   const updates = mensalidades.map(m =>
-    base44.entities.Mensalidade.update(m.id, {
+    churchos.financeiro.registrarMensalidade({
       status: "pago",
       data_pagamento: new Date().toISOString().split("T")[0],
     })

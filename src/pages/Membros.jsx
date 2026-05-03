@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import churchos from "@/api/churchos.js";
 import { Link } from "react-router-dom";
 import { Plus, Search, Phone, Eye, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,12 +19,12 @@ export default function Membros() {
 
   const { data: membros = [], isLoading } = useQuery({
     queryKey: ["membros"],
-    queryFn: () => base44.entities.Titular.list("-created_date"),  // Keep Titular entity for now
+    queryFn: () => churchos.membros.listar({ sort: '-created_at' }),
   });
 
   const createMutation = useMutation({
     mutationFn: async (data) => {
-      const membro = await base44.entities.Titular.create(data);
+      const membro = await churchos.membros.criar(data);
       return membro;
     },
     onSuccess: () => {

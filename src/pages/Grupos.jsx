@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import churchos from "@/api/churchos.js";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,21 +38,21 @@ export default function Grupos() {
 
   const { data: grupos = [], isLoading } = useQuery({
     queryKey: ["grupos"],
-    queryFn: () => base44.entities.Grupo.list("-created_date"),
+    queryFn: () => churchos.grupos.listar({ sort: '-created_at' }),
   });
 
   const { data: igrejas = [] } = useQuery({
     queryKey: ["igrejas"],
-    queryFn: () => base44.entities.Igreja.list(),
+    queryFn: () => churchos.usuarios.listar(),
   });
 
   const { data: titulares = [] } = useQuery({
     queryKey: ["titulares"],
-    queryFn: () => base44.entities.Titular.list(),
+    queryFn: () => churchos.membros.listar({ sort: '-created_at' }),
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Grupo.create(data),
+    mutationFn: (data) => churchos.grupos.criar(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["grupos"] });
       setShowForm(false);
@@ -60,7 +60,7 @@ export default function Grupos() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Grupo.update(id, data),
+    mutationFn: ({ id, data }) => churchos.grupos.atualizar(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["grupos"] });
       setShowForm(false);
@@ -69,7 +69,7 @@ export default function Grupos() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Grupo.delete(id),
+    mutationFn: (id) => churchos.grupos.atualizar(id, { status: 'inativo' }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["grupos"] }),
   });
 
