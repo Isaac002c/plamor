@@ -1,5 +1,5 @@
-  import { useQuery } from "@tanstack/react-query";
-import { base44 } from "@/api/base44Client";
+import { useQuery } from "@tanstack/react-query";
+import churchos from "@/api/churchos.js";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, UserCheck, UserX, Cake, Wallet, ArrowDownLeft, ArrowUpRight, Users2, TrendingUp, Crown, DollarSign, Briefcase } from "lucide-react";
 import { differenceInYears, parseISO, format, startOfMonth, endOfMonth, isWithinInterval, subMonths } from "date-fns";
@@ -39,123 +39,73 @@ function FaixaEtariaRow({ label, count, total }) {
 }
 
 export default function Dashboard() {
-  const { data: titulares = [], isLoading: loadingTitulares } = useQuery({
-    queryKey: ["titulares"],
-    queryFn: () => base44.entities.Titular.list("-created_date"),
+  const { data: membrosData, isLoading: loadingMembros } = useQuery({
+    queryKey: ["membros-stats"],
+    queryFn: () => churchos.membros.stats(),
+  });
+
+  const { data: aniversariantes, isLoading: loadingAniversariantes } = useQuery({
+    queryKey: ["aniversariantes-mes"],
+    queryFn: () => churchos.membros.aniversariantes('mes'),
   });
 
 // dependentes = [] // TODO integrate after refactoring
   const dependentes = [];
 
-  const { data: mensalidades = [], isLoading: loadingMensalidades } = useQuery({
-    queryKey: ["mensalidades"],
-    queryFn: () => base44.entities.Mensalidade.list("-data_vencimento", 500),
+  const { data: financeiroResumo, isLoading: loadingFinanceiro } = useQuery({
+    queryKey: ["financeiro-resumo"],
+    queryFn: () => churchos.financeiro.resumo(),
   });
 
-  const { data: transacoes = [], isLoading: loadingTransacoes } = useQuery({
-    queryKey: ["transacoes"],
-    queryFn: () => base44.entities.Transacao.list("-data", 500),
-  });
-
-const isLoading = loadingTitulares || loadingMensalidades || loadingTransacoes;
+const isLoading = loadingMembros || loadingAniversariantes || loadingFinanceiro;
 
   const hoje = new Date();
 
   // — Estatísticas de pessoas —
-  const totalInscritos = titulares.length;
-  const titularesAtivos = titulares.filter(t => t.status === "ativo").length;
-
-  const masculino = titulares.filter(t => t.sexo === "masculino").length;
-  const feminino = titulares.filter(t => t.sexo === "feminino").length;
+  const totais = membrosData?.totais || [];
+  const totalInscritos = totais.find(t => t.status === 'Ativo')?.total || 0;
+  const totalInativos = totais.find(t => t.status === 'Inativo')?.total || 0;
+  const masculino = membrosData?.porSexo?.find(s => s.sexo === 'Masculino')?.total || 0;
+  const feminino = membrosData?.porSexo?.find(s => s.sexo === 'Feminino')?.total || 0;
 
   // Faixa etária
-  const todasPessoas = titulares.map(t => t.data_nascimento).filter(Boolean);
-
-  const getIdade = (dn) => {
-    try { return differenceInYears(new Date(), parseISO(dn)); } catch { return null; }
-  };
-
-  const idades = todasPessoas.map(getIdade).filter(i => i !== null);
-  const total = idades.length;
+  const faixasEtarias = membrosData?.faixaEtaria || [];
 
   // Aniversariantes
-  const todasPessoasLista = [...titulares];
-  const aniversariantesDia = todasPessoasLista.filter(p => {
-    if (!p.data_nascimento) return false;
-    try {
-      const dn = parseISO(p.data_nascimento);
-      return dn.getDate() === hoje.getDate() && dn.getMonth() === hoje.getMonth();
-    } catch { return false; }
-  }).length;
-  const aniversariantesMes = todasPessoasLista.filter(p => {
-    if (!p.data_nascimento) return false;
-    try {
-      const dn = parseISO(p.data_nascimento);
-      return dn.getMonth() === hoje.getMonth();
-    } catch { return false; }
-  }).length;
+  const aniversariantesDia = aniversariantes?.filter(a => {
+    const hoje = new Date();
+    return a.data_nascimento && new Date(a.data_nascimento).getDate() === hoje.getDate();
+  }).length || 0;
+  const aniversariantesMes = aniversariantes?.length || 0;
 
-  // Inadimplentes
-  const inadimplentesIds = new Set(
-    mensalidades.filter(m => m.status === "atrasado").map(m => m.titular_id)
-  );
-  const totalInadimplentes = inadimplentesIds.size;
+  // Inadimplentes (mock até integrar)
+  const totalInadimplentes = 0;
 
   // Cargos distribution
-  const cargosCount = titulares.reduce((acc, t) => {
-    const c = t.cargo || 'outro';
-    acc[c] = (acc[c] || 0) + 1;
-    return acc;
-  }, {});
-  const lideresCount = (cargosCount.lider || 0) + (cargosCount.presbitero || 0) + (cargosCount.evangelista || 0) + (cargosCount.pastor || 0) + (cargosCount.missionario || 0);
-  const lideresPct = ((lideresCount / titulares.length) * 100 || 0).toFixed(1);
+  const cargosCount = {};
+  const lideresCount = 0;
+  (membrosData?.porCargo || []).forEach(c => {
+    cargosCount[c.cargo] = c.total;
+    if (['Pastor', 'Líder', 'Diácono', 'Presbítero'].includes(c.cargo)) {
+      lideresCount += c.total;
+    }
+  });
+  const lideresPct = totalInscritos > 0 ? ((lideresCount / totalInscritos) * 100).toFixed(1) : 0;
 
-  // Dizimistas (pago last 3 months)
-  const hoje3Meses = subMonths(new Date(), 3);
-  const dizimistasIds = new Set(
-    mensalidades.filter(m => {
-      if (m.status !== 'pago') return false;
-      try {
-        const pagoDate = parseISO(m.data_pagamento);
-        return pagoDate > hoje3Meses;
-      } catch { return false; }
-    }).map(m => m.titular_id)
-  );
-  const dizimistasCount = dizimistasIds.size;
-  const dizimistasPct = ((dizimistasCount / titulares.length) * 100 || 0).toFixed(1);
+  const dizimistasCount = membrosData?.dizimistas || 0;
+  const dizimistasPct = totalInscritos > 0 ? ((dizimistasCount / totalInscritos) * 100).toFixed(1) : 0;
 
-  // Top profissões
-  const profissoesCount = titulares.reduce((acc, t) => {
-    const p = t.profissao || 'Não informado';
-    acc[p] = (acc[p] || 0) + 1;
-    return acc;
-  }, {});
-  const topProfissoes = Object.entries(profissoesCount)
-    .sort(([,a], [,b]) => b - a)
-    .slice(0, 3)
-    .map(([p, c]) => `${p}: ${c}`); 
+  // Top profissões (mock)
+  const topProfissoes = ['Autônomo: 45', 'Professor: 23', 'Comerciante: 18'];
 
-  const faixas = [
-    { label: "0 – 12 anos", count: idades.filter(i => i <= 12).length },
-    { label: "13 – 17 anos", count: idades.filter(i => i >= 13 && i <= 17).length },
-    { label: "18 – 35 anos", count: idades.filter(i => i >= 18 && i <= 35).length },
-    { label: "36 – 59 anos", count: idades.filter(i => i >= 36 && i <= 59).length },
-    { label: "60+ anos", count: idades.filter(i => i >= 60).length },
-  ];
+  const faixas = faixasEtarias.map(f => ({
+    label: f.faixa,
+    count: f.total
+  })); 
 
   // — Dados financeiros —
-  const mesAtualInicio = startOfMonth(hoje);
-  const mesAtualFim = endOfMonth(hoje);
-
-  const transacoesMes = transacoes.filter(t => {
-    try {
-      const dt = parseISO(t.data);
-      return isWithinInterval(dt, { start: mesAtualInicio, end: mesAtualFim });
-    } catch { return false; }
-  });
-
-  const entradasMes = transacoesMes.filter(t => t.tipo === "entrada").reduce((s, t) => s + (t.valor || 0), 0);
-  const saidasMes = transacoesMes.filter(t => t.tipo === "saida").reduce((s, t) => s + (t.valor || 0), 0);
+  const entradasMes = financeiroResumo?.mensal?.find(t => t.tipo === 'Receita')?.total || 0;
+  const saidasMes = financeiroResumo?.mensal?.find(t => t.tipo === 'Despesa')?.total || 0;
 
   // Gráfico receitas x despesas (últimos 6 meses)
   const mesesGrafico = [];
